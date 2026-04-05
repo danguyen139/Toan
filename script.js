@@ -118,22 +118,51 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.accuracyRate.textContent = `${rate}%`;
     }
 
+    // Clock SVG Generator
+    function drawClockSVG(h, m) {
+        const hAngle = (h % 12 + m / 60) * 30;
+        const mAngle = m * 6;
+        
+        let numbers = "";
+        for (let i = 1; i <= 12; i++) {
+            const angle = i * 30 * (Math.PI / 180);
+            const x = 100 + 75 * Math.sin(angle);
+            const y = 100 - 75 * Math.cos(angle);
+            numbers += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="700" fill="var(--text-main)">${i}</text>`;
+        }
+
+        return `
+            <svg viewBox="0 0 200 200" class="clock-svg">
+                <!-- Face -->
+                <circle cx="100" cy="100" r="95" fill="white" stroke="var(--text-main)" stroke-width="4" />
+                <circle cx="100" cy="100" r="4" fill="var(--text-main)" />
+                
+                <!-- Numbers -->
+                ${numbers}
+                
+                <!-- Hour Hand -->
+                <line x1="100" y1="100" x2="100" y2="55" stroke="var(--text-main)" stroke-width="6" stroke-linecap="round" transform="rotate(${hAngle}, 100, 100)" />
+                
+                <!-- Minute Hand -->
+                <line x1="100" y1="100" x2="100" y2="25" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" transform="rotate(${mAngle}, 100, 100)" />
+            </svg>
+        `;
+    }
+
     // Problem Generators
     function generateGrade1Problem() {
-        const types = ['add', 'sub', 'compare', 'missing'];
+        const types = ['add', 'sub', 'compare', 'missing', 'clock'];
         const type = types[Math.floor(Math.random() * types.length)];
         let problem = { type: type };
         
         if (type === 'add') {
-            // Addition within 100 with carrying
-            const a = Math.floor(Math.random() * 80) + 10; // 10-89
-            const b = Math.floor(Math.random() * (100 - a)) + 1; // Sum <= 100
+            const a = Math.floor(Math.random() * 80) + 10;
+            const b = Math.floor(Math.random() * (100 - a)) + 1;
             problem.text = `${a} + ${b} = ?`;
             problem.answer = a + b;
         } else if (type === 'sub') {
-            // Subtraction within 100 with borrowing
-            const a = Math.floor(Math.random() * 80) + 20; // 20-99
-            const b = Math.floor(Math.random() * (a - 5)) + 1; // Result >= 5
+            const a = Math.floor(Math.random() * 80) + 20;
+            const b = Math.floor(Math.random() * (a - 5)) + 1;
             problem.text = `${a} - ${b} = ?`;
             problem.answer = a - b;
         } else if (type === 'compare') {
@@ -142,10 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
             problem.text = `${a} ... ${b}`;
             problem.answer = a > b ? '>' : (a < b ? '<' : '=');
             problem.isCompare = true;
+        } else if (type === 'clock') {
+            const h = Math.floor(Math.random() * 12) + 1;
+            const m = Math.floor(Math.random() * 12) * 5; // 5-minute increments
+            problem.h = h;
+            problem.m = m;
+            problem.isClock = true;
+            problem.text = "Bé hãy xem đồng hồ và cho biết mấy giờ nhé!";
         } else {
-            // Missing number: a + ? = c
-            const c = Math.floor(Math.random() * 80) + 20; // Sum 20-99
-            const a = Math.floor(Math.random() * (c - 5)) + 5; // Part 5-(c-5)
+            const c = Math.floor(Math.random() * 80) + 20;
+            const a = Math.floor(Math.random() * (c - 5)) + 5;
             const pos = Math.random() > 0.5 ? 'first' : 'second';
             problem.text = pos === 'first' ? `? + ${a} = ${c}` : `${a} + ? = ${c}`;
             problem.answer = c - a;
@@ -231,8 +266,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderQuestion() {
         state.currentProblem = state.currentGrade === 1 ? generateGrade1Problem() : generateGrade4Problem();
         
-        elements.mathQuestion.textContent = state.currentProblem.text.includes('=') ? 
-            state.currentProblem.text.split('=')[0] : state.currentProblem.text;
+            const qText = document.getElementById('math-question');
+            if (state.currentProblem.isClock) {
+                qText.innerHTML = `
+                    <div class="clock-display">
+                        ${drawClockSVG(state.currentProblem.h, state.currentProblem.m)}
+                        <p style="font-size: 1.2rem; margin-top: 10px;">Bé hãy xem đồng hồ:</p>
+                    </div>
+                `;
+            } else {
+                qText.textContent = state.currentProblem.text.includes('=') ? 
+                    state.currentProblem.text.split('=')[0] : state.currentProblem.text;
+            }
         
         elements.answerInputs.innerHTML = '';
         elements.resultFeedback.classList.add('hidden');
@@ -262,6 +307,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             document.getElementById('input-num').focus();
+        } else if (state.currentProblem.isClock) {
+            elements.answerInputs.innerHTML = `
+                <div class="time-input-layout">
+                    <input type="number" id="input-h" placeholder="giờ" min="1" max="12">
+                    <span class="time-separator">:</span>
+                    <input type="number" id="input-m" placeholder="phút" min="0" max="59">
+                </div>
+            `;
+            document.getElementById('input-h').focus();
         } else if (state.currentProblem.isCompare) {
             elements.answerInputs.innerHTML = `
                 <div class="compare-buttons">
@@ -310,6 +364,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const userNum = parseInt(document.getElementById('input-num').value);
             const userDen = parseInt(document.getElementById('input-den').value);
             isCorrect = (userNum === prob.num && userDen === prob.den);
+        } else if (prob.isClock) {
+            const userH = parseInt(document.getElementById('input-h').value);
+            const userM = parseInt(document.getElementById('input-m').value) || 0;
+            isCorrect = (userH === prob.h && userM === prob.m);
         } else if (prob.isCompare) {
             isCorrect = (state.selectedCompare === prob.answer);
             state.selectedCompare = null; // Reset
@@ -377,6 +435,8 @@ document.addEventListener('DOMContentLoaded', () => {
             correctStr = `Đáp án đúng: Thương ${prob.quotient}, dư ${prob.remainder}`;
         } else if (prob.isFraction) {
             correctStr = `Đáp án đúng: ${prob.num}/${prob.den}`;
+        } else if (prob.isClock) {
+            correctStr = `Đáp án đúng: ${prob.h} giờ ${prob.m} phút`;
         } else if (prob.isCompare) {
             correctStr = `Đáp án đúng: ${prob.answer}`;
         } else {
