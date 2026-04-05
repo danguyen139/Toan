@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const girlPraise = ["Đúng rồi! Meo meo!", "Con giỏi quá! Tặng con 1 chú mèo!", "Tuyệt vời! Cat-tastic!", "Xuất sắc luôn!", "Meo! Chính xác rồi!"];
     const boyPraise = ["Siêu Anh Hùng đây rồi!", "Mạnh mẽ quá! Thắng rồi!", "Iron Man khen con đấy!", "Spider-Web! Trúng phóc!", "Quá đỉnh luôn siêu nhân!"];
     const encouragements = ["Cố lên con nhé!", "Không sao, thử lại nào!", "Gần đúng rồi, tập trung hơn nhé!", "Bình tĩnh tính lại con nhé!"];
+    
+    // Mascot Pools
+    const girlMascots = ["cat.png", "dog.png", "rabbit.png", "panda.png", "hamster.png", "elsa.png", "doraemon.png", "hello_kitty.png"];
+    const boyMascots = ["hero_iron.png", "hero_spider.png", "hero_cap.png", "hero_bat.png", "hero_super.png", "hero_wonder.png", "minion.png", "pikachu.png"];    
 
     // DOM Elements
     const elements = {
@@ -73,7 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.mainContainer.classList.remove('hidden');
         
         // Show companion mascot
-        elements.mascotIcon.src = (theme === 'girl') ? "assets/cat.png" : "assets/hero_iron.png";
+        const pool = (theme === 'girl') ? girlMascots : boyMascots;
+        elements.mascotIcon.src = `assets/${pool[Math.floor(Math.random() * pool.length)]}`;
+        elements.mascotCompanion.classList.add('pop-in');
+        setTimeout(() => elements.mascotCompanion.classList.remove('pop-in'), 600);
         
         resetStats();
         initTimer();
@@ -404,12 +411,17 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.praiseMessage.textContent = msg;
         elements.praiseMessage.style.color = 'var(--primary)';
         
-        // Mascot Animation
+        // Mascot Animation & Swap
+        elements.mascotCompanion.classList.remove('mascot-happy', 'pop-in');
+        void elements.mascotCompanion.offsetWidth; // Trigger reflow
         elements.mascotCompanion.classList.add('mascot-happy');
-        if (state.currentTheme === 'boy') {
-             // Randomly switch hero for boy on success
-             elements.mascotIcon.src = Math.random() > 0.5 ? "assets/hero_iron.png" : "assets/hero_spider.png";
-        }
+        
+        // Randomly switch mascot on success
+        const mascotPool = state.currentTheme === 'girl' ? girlMascots : boyMascots;
+        const newMascot = mascotPool[Math.floor(Math.random() * mascotPool.length)];
+        elements.mascotIcon.src = `assets/${newMascot}`;
+        elements.mascotCompanion.classList.add('pop-in');
+        setTimeout(() => elements.mascotCompanion.classList.remove('pop-in'), 600);
 
         elements.feedbackText.textContent = "Chính xác tuyệt đối!";
         elements.resultFeedback.className = "result-feedback feedback-correct";
