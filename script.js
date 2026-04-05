@@ -120,49 +120,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Problem Generators
     function generateGrade1Problem() {
-        const types = ['add', 'sub'];
+        const types = ['add', 'sub', 'compare', 'missing'];
         const type = types[Math.floor(Math.random() * types.length)];
         let problem = { type: type };
         
         if (type === 'add') {
-            const a = Math.floor(Math.random() * 15) + 1; // 1-15
-            const b = Math.floor(Math.random() * (20 - a)) + 1; // Sum <= 20
+            // Addition within 100 with carrying
+            const a = Math.floor(Math.random() * 80) + 10; // 10-89
+            const b = Math.floor(Math.random() * (100 - a)) + 1; // Sum <= 100
             problem.text = `${a} + ${b} = ?`;
             problem.answer = a + b;
-        } else {
-            const a = Math.floor(Math.random() * 15) + 5; // 5-20
-            const b = Math.floor(Math.random() * a);     // Result >= 0
+        } else if (type === 'sub') {
+            // Subtraction within 100 with borrowing
+            const a = Math.floor(Math.random() * 80) + 20; // 20-99
+            const b = Math.floor(Math.random() * (a - 5)) + 1; // Result >= 5
             problem.text = `${a} - ${b} = ?`;
             problem.answer = a - b;
+        } else if (type === 'compare') {
+            const a = Math.floor(Math.random() * 90) + 10;
+            const b = Math.floor(Math.random() * 90) + 10;
+            problem.text = `${a} ... ${b}`;
+            problem.answer = a > b ? '>' : (a < b ? '<' : '=');
+            problem.isCompare = true;
+        } else {
+            // Missing number: a + ? = c
+            const c = Math.floor(Math.random() * 80) + 20; // Sum 20-99
+            const a = Math.floor(Math.random() * (c - 5)) + 5; // Part 5-(c-5)
+            const pos = Math.random() > 0.5 ? 'first' : 'second';
+            problem.text = pos === 'first' ? `? + ${a} = ${c}` : `${a} + ? = ${c}`;
+            problem.answer = c - a;
         }
         return problem;
     }
 
     function generateGrade4Problem() {
-        const pool = ['multiply', 'multiply', 'divide', 'divide_remainder', 'divide_remainder', 'divide_remainder'];
+        const pool = ['multiply', 'divide', 'fraction', 'expression', 'find_x', 'geometry'];
         const type = pool[Math.floor(Math.random() * pool.length)];
         let problem = { type: type };
         
         if (type === 'multiply') {
             const a = Math.floor(Math.random() * 800) + 100;
-            const b = Math.floor(Math.random() * 50) + 5;
+            const b = Math.floor(Math.random() * 90) + 10; // 2-digit multiplier
             problem.text = `${a} × ${b}`;
             problem.answer = a * b;
         } else if (type === 'divide') {
-            // Difficulty Increase: Divisor (b) is 2 digits (10-99)
-            const b = Math.floor(Math.random() * 90) + 10;   // 10-99
-            const q = Math.floor(Math.random() * 100) + 5;   // Quotient
-            const a = b * q;
-            problem.text = `${a} : ${b}`;
-            problem.answer = q;
-        } else {
-            // Difficulty Increase: Divisor (b) is 2 digits (10-99)
-            const b = Math.floor(Math.random() * 90) + 10;   // 10-99
-            const a = Math.floor(Math.random() * 5000) + 1000; // Larger dividend
-            if (a % b === 0) return generateGrade4Problem();
+            const b = Math.floor(Math.random() * 90) + 10;
+            const q = Math.floor(Math.random() * 200) + 10;
+            const a = b * q + (Math.random() > 0.5 ? 0 : Math.floor(Math.random() * (b - 1)));
             problem.text = `${a} : ${b}`;
             problem.quotient = Math.floor(a / b);
             problem.remainder = a % b;
+            problem.isDivide = true;
+        } else if (type === 'fraction') {
+            // Simple fractions with common denominators or multiples
+            const d = [2, 3, 4, 5, 6, 8, 10][Math.floor(Math.random() * 7)];
+            const n1 = Math.floor(Math.random() * 10) + 1;
+            const n2 = Math.floor(Math.random() * 10) + 1;
+            const op = Math.random() > 0.5 ? '+' : '-';
+            
+            if (op === '-') {
+                const maxN = Math.max(n1, n2);
+                const minN = Math.min(n1, n2);
+                problem.text = `${maxN}/${d} - ${minN}/${d}`;
+                problem.num = maxN - minN;
+            } else {
+                problem.text = `${n1}/${d} + ${n2}/${d}`;
+                problem.num = n1 + n2;
+            }
+            problem.den = d;
+            problem.isFraction = true;
+        } else if (type === 'expression') {
+            const a = Math.floor(Math.random() * 500) + 100;
+            const b = Math.floor(Math.random() * 50) + 10;
+            const c = Math.floor(Math.random() * 9) + 2;
+            const variant = Math.floor(Math.random() * 2);
+            if (variant === 0) {
+                problem.text = `(${a} + ${b}) × ${c}`;
+                problem.answer = (a + b) * c;
+            } else {
+                problem.text = `${a} - ${b} × ${c}`;
+                problem.answer = a - b * c;
+            }
+        } else if (type === 'find_x') {
+            const a = Math.floor(Math.random() * 500) + 100;
+            const b = Math.floor(Math.random() * 1000) + 500;
+            const variant = Math.floor(Math.random() * 2);
+            if (variant === 0) {
+                problem.text = `x + ${a} = ${b}`;
+                problem.answer = b - a;
+            } else {
+                problem.text = `x - ${a} = ${b}`;
+                problem.answer = b + a;
+            }
+        } else {
+            // Geometry: Perimeter or Area
+            const w = Math.floor(Math.random() * 20) + 5;
+            const h = Math.floor(Math.random() * 15) + 5;
+            const isArea = Math.random() > 0.5;
+            if (isArea) {
+                problem.text = `Diện tích hình chữ nhật có cạnh ${w}cm và ${h}cm: ? cm²`;
+                problem.answer = w * h;
+            } else {
+                problem.text = `Chu vi hình chữ nhật có cạnh ${w}cm và ${h}cm: ? cm`;
+                problem.answer = (w + h) * 2;
+            }
         }
         return problem;
     }
@@ -180,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.praiseMessage.textContent = '';
         elements.mascotCompanion.classList.remove('mascot-happy');
         
-        if (state.currentProblem.type === 'divide' || state.currentProblem.type === 'divide_remainder') {
+        if (state.currentProblem.isDivide) {
             elements.answerInputs.innerHTML = `
                 <div class="input-group">
                     <label class="input-label">Thương</label>
@@ -192,6 +253,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             document.getElementById('input-q').focus();
+        } else if (state.currentProblem.isFraction) {
+            elements.answerInputs.innerHTML = `
+                <div class="fraction-input">
+                    <input type="number" id="input-num" placeholder="?">
+                    <div class="fraction-line"></div>
+                    <input type="number" id="input-den" placeholder="?">
+                </div>
+            `;
+            document.getElementById('input-num').focus();
+        } else if (state.currentProblem.isCompare) {
+            elements.answerInputs.innerHTML = `
+                <div class="compare-buttons">
+                    <button class="btn-compare" data-val="<">&lt;</button>
+                    <button class="btn-compare" data-val="=">=</button>
+                    <button class="btn-compare" data-val=">">&gt;</button>
+                </div>
+            `;
+            const btns = elements.answerInputs.querySelectorAll('.btn-compare');
+            btns.forEach(btn => {
+                btn.onclick = () => {
+                    btns.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    state.selectedCompare = btn.getAttribute('data-val');
+                    checkAnswer();
+                };
+            });
         } else {
             elements.answerInputs.innerHTML = `
                 <div class="input-group">
@@ -215,12 +302,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let isCorrect = false;
         const prob = state.currentProblem;
         
-        if (prob.type === 'divide' || prob.type === 'divide_remainder') {
+        if (prob.isDivide) {
             const userQ = parseInt(document.getElementById('input-q').value);
             const userR = parseInt(document.getElementById('input-r').value) || 0;
-            const targetQ = prob.type === 'divide' ? prob.answer : prob.quotient;
-            const targetR = prob.type === 'divide' ? 0 : prob.remainder;
-            isCorrect = (userQ === targetQ && userR === targetR);
+            isCorrect = (userQ === prob.quotient && userR === prob.remainder);
+        } else if (prob.isFraction) {
+            const userNum = parseInt(document.getElementById('input-num').value);
+            const userDen = parseInt(document.getElementById('input-den').value);
+            isCorrect = (userNum === prob.num && userDen === prob.den);
+        } else if (prob.isCompare) {
+            isCorrect = (state.selectedCompare === prob.answer);
+            state.selectedCompare = null; // Reset
         } else {
             const userAns = parseInt(document.getElementById('input-ans').value);
             isCorrect = (userAns === prob.answer);
@@ -281,10 +373,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const prob = state.currentProblem;
         let correctStr = "";
-        if (prob.type === 'divide' || prob.type === 'divide_remainder') {
-            const targetQ = prob.type === 'divide' ? prob.answer : prob.quotient;
-            const targetR = prob.type === 'divide' ? 0 : prob.remainder;
-            correctStr = `Đáp án đúng: Thương ${targetQ}, dư ${targetR}`;
+        if (prob.isDivide) {
+            correctStr = `Đáp án đúng: Thương ${prob.quotient}, dư ${prob.remainder}`;
+        } else if (prob.isFraction) {
+            correctStr = `Đáp án đúng: ${prob.num}/${prob.den}`;
+        } else if (prob.isCompare) {
+            correctStr = `Đáp án đúng: ${prob.answer}`;
         } else {
             correctStr = `Đáp án đúng: ${prob.answer}`;
         }
