@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Problem Generators
     function generateGrade1Problem() {
-        const types = ['add', 'sub', 'compare', 'missing', 'clock'];
+        const types = ['add', 'sub', 'compare', 'missing', 'clock', 'clock', 'clock'];
         const type = types[Math.floor(Math.random() * types.length)];
         let problem = { type: type };
         
@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pos = Math.random() > 0.5 ? 'first' : 'second';
             problem.text = pos === 'first' ? `? + ${a} = ${c}` : `${a} + ? = ${c}`;
             problem.answer = c - a;
+            problem.isMissing = true;
         }
         return problem;
     }
@@ -247,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 problem.text = `x - ${a} = ${b}`;
                 problem.answer = b + a;
             }
+            problem.isFindX = true;
         } else {
             // Geometry: Perimeter or Area
             const w = Math.floor(Math.random() * 20) + 5;
@@ -274,6 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p style="font-size: 1.2rem; margin-top: 10px;">Bé hãy xem đồng hồ:</p>
                     </div>
                 `;
+            } else if (state.currentProblem.isMissing || state.currentProblem.isFindX) {
+                qText.textContent = state.currentProblem.text;
             } else {
                 qText.textContent = state.currentProblem.text.includes('=') ? 
                     state.currentProblem.text.split('=')[0] : state.currentProblem.text;
