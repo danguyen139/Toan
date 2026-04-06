@@ -197,7 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateGrade4Problem() {
-        const pool = ['multiply', 'divide', 'fraction', 'expression', 'find_x', 'geometry'];
+        const pool = [
+            'multiply', 'divide', 
+            'fraction', 'fraction', 'fraction', 
+            'simplify_fraction', 'simplify_fraction', 'simplify_fraction', 
+            'expression', 'expression', 
+            'find_x', 'find_x', 
+            'geometry', 'geometry'
+        ];
         const type = pool[Math.floor(Math.random() * pool.length)];
         let problem = { type: type };
         
@@ -214,6 +221,22 @@ document.addEventListener('DOMContentLoaded', () => {
             problem.quotient = Math.floor(a / b);
             problem.remainder = a % b;
             problem.isDivide = true;
+        } else if (type === 'simplify_fraction') {
+            let simN, simD;
+            function getGcd(a, b) { return b === 0 ? a : getGcd(b, a % b); }
+            do {
+                simN = Math.floor(Math.random() * 9) + 1;
+                simD = Math.floor(Math.random() * 8) + 2; 
+            } while (simN >= simD || getGcd(simN, simD) > 1);
+            
+            const factor = Math.floor(Math.random() * 5) + 2; 
+            const pNum = simN * factor;
+            const pDen = simD * factor;
+            
+            problem.text = `Rút gọn phân số: ${pNum}/${pDen}`;
+            problem.num = simN;
+            problem.den = simD;
+            problem.isFraction = true;
         } else if (type === 'fraction') {
             // Simple fractions with common denominators or multiples
             const d = [2, 3, 4, 5, 6, 8, 10][Math.floor(Math.random() * 7)];
