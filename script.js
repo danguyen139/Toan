@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
             totalQuestions: 0,
             correctCount: 0,
             wrongCount: 0,
-            minutesSpent: 0
+            secondsSpent: 0
         },
         currentProblem: null,
         timerInterval: null
@@ -94,25 +94,70 @@ document.addEventListener('DOMContentLoaded', () => {
         state.appBody.removeAttribute('data-theme');
     }
 
+    function getTodayString() {
+        const d = new Date();
+        return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    }
+
+    function saveStats() {
+        if (!state.currentGrade) return;
+        localStorage.setItem(`toan_stats_grade_${state.currentGrade}`, JSON.stringify({
+            date: getTodayString(),
+            stats: state.stats
+        }));
+    }
+
+    function loadStats() {
+        if (!state.currentGrade) return null;
+        try {
+            const dataStr = localStorage.getItem(`toan_stats_grade_${state.currentGrade}`);
+            if (dataStr) {
+                const data = JSON.parse(dataStr);
+                if (data.date === getTodayString()) {
+                    return data.stats;
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        return null;
+    }
+
+    function formatTime(totalSeconds) {
+        if (!totalSeconds) totalSeconds = 0;
+        const m = Math.floor(totalSeconds / 60);
+        const s = totalSeconds % 60;
+        return `${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
+    }
+
     function resetStats() {
-        state.stats = {
-            startTime: new Date(),
-            totalQuestions: 0,
-            correctCount: 0,
-            wrongCount: 0,
-            minutesSpent: 0
-        };
+        const saved = loadStats();
+        if (saved) {
+            state.stats = saved;
+            if (state.stats.startTime) state.stats.startTime = new Date(state.stats.startTime);
+            else state.stats.startTime = new Date();
+        } else {
+            state.stats = {
+                startTime: new Date(),
+                totalQuestions: 0,
+                correctCount: 0,
+                wrongCount: 0,
+                secondsSpent: 0
+            };
+        }
         updateStatsUI();
         elements.startTime.textContent = state.stats.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
     function initTimer() {
         if (state.timerInterval) clearInterval(state.timerInterval);
+        elements.totalMinutes.textContent = formatTime(state.stats.secondsSpent);
         state.timerInterval = setInterval(() => {
-            const now = new Date();
-            const diffMs = now - state.stats.startTime;
-            state.stats.minutesSpent = Math.floor(diffMs / 60000);
-            elements.totalMinutes.textContent = state.stats.minutesSpent;
+            if (!document.hidden) {
+                state.stats.secondsSpent = (state.stats.secondsSpent || 0) + 1;
+                elements.totalMinutes.textContent = formatTime(state.stats.secondsSpent);
+                if (state.stats.secondsSpent % 5 === 0) saveStats();
+            }
         }, 1000);
     }
 
@@ -123,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const rate = state.stats.totalQuestions === 0 ? 0 : Math.round((state.stats.correctCount / state.stats.totalQuestions) * 100);
         elements.accuracyRate.textContent = `${rate}%`;
+        elements.totalMinutes.textContent = formatTime(state.stats.secondsSpent);
     }
 
     // Clock SVG Generator
@@ -419,6 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showError();
         }
 
+        saveStats();
         updateStatsUI();
         showResultDetails(isCorrect);
     }
