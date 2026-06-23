@@ -293,7 +293,7 @@ function renderQuestion() {
     } else if (prob.isDecimal) {
         answerInputs.innerHTML = `<div class="input-group">
             <label class="input-label">Đáp án</label>
-            <input type="text" id="input-ans" placeholder="?" inputmode="decimal" style="width:130px;height:80px;font-size:2.5rem;text-align:center;border:4px solid #f3f4f6;border-radius:20px;font-family:inherit;font-weight:700;outline:none">
+            <input type="text" id="input-ans" placeholder="?" inputmode="decimal" class="input-ans-styled">
         </div>`;
         const inp = document.getElementById('input-ans');
         inp.focus();

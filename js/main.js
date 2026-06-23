@@ -18,10 +18,28 @@ const elements = {
     btnRedeemClose: document.getElementById('btn-redeem-close')
 };
 
+function updateStickerField(theme) {
+    const girlPool = [
+        'cat.png', 'elsa.png', 'rabbit.png', 'hello_kitty.png',
+        'panda.png', 'doraemon.png', 'kirby.svg', 'totoro.svg', 'stitch.svg'
+    ];
+    const boyPool = [
+        'hero_iron.png', 'hero_spider.png', 'hero_cap.png', 'minion.png',
+        'pikachu.png', 'hero_bat.png', 'hulk.svg', 'sonic.svg', 'goku.svg'
+    ];
+    const pool = (theme === 'girl' ? girlPool : boyPool)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 6);
+    document.querySelectorAll('#sticker-field .sticker').forEach((el, i) => {
+        if (pool[i]) el.src = `assets/${pool[i]}`;
+    });
+}
+
 function startApp(grade, theme) {
     state.currentGrade = grade;
     state.currentTheme = theme;
     elements.appBody.setAttribute('data-theme', theme);
+    updateStickerField(theme);
 
     elements.selectionScreen.classList.add('hidden');
     elements.mainContainer.classList.remove('hidden');
@@ -46,6 +64,10 @@ function resetToSelection() {
     elements.selectionScreen.classList.remove('hidden');
     elements.appBody.removeAttribute('data-theme');
     elements.streakBar?.classList.add('hidden');
+    const mixed = ['kirby.svg', 'pikachu.png', 'hello_kitty.png', 'sonic.svg', 'totoro.svg', 'goku.svg'];
+    document.querySelectorAll('#sticker-field .sticker').forEach((el, i) => {
+        if (mixed[i]) el.src = `assets/${mixed[i]}`;
+    });
 }
 
 function openRedeemModal() {

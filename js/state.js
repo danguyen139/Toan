@@ -11,7 +11,8 @@ const state = {
     currentProblem: null,
     timerInterval: null,
     selectedCompare: null,
-    streakAchievedToday: false
+    streakAchievedToday: false,
+    consecutiveCorrect: 0
 };
 
 const girlPraise = [
@@ -29,11 +30,13 @@ const encouragements = [
 
 const girlMascots = [
     "cat.png", "dog.png", "rabbit.png", "panda.png",
-    "hamster.png", "elsa.png", "doraemon.png", "hello_kitty.png"
+    "hamster.png", "elsa.png", "doraemon.png", "hello_kitty.png",
+    "kirby.svg", "totoro.svg", "stitch.svg"
 ];
 const boyMascots = [
     "hero_iron.png", "hero_spider.png", "hero_cap.png", "hero_bat.png",
-    "hero_super.png", "hero_wonder.png", "minion.png", "pikachu.png"
+    "hero_super.png", "hero_wonder.png", "minion.png", "pikachu.png",
+    "hulk.svg", "sonic.svg", "goku.svg"
 ];
 
 function formatVN(n) {

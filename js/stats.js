@@ -66,6 +66,7 @@ function resetStats() {
             secondsSpent: 0
         };
     }
+    state.consecutiveCorrect = 0;
     updateStatsUI();
     const startEl = document.getElementById('start-time');
     if (startEl) {
