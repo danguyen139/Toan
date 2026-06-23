@@ -1,24 +1,22 @@
-import { state } from './state.js';
-
-export function getTodayString() {
+function getTodayString() {
     const d = new Date();
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
 
-export function getYesterdayString() {
+function getYesterdayString() {
     const d = new Date();
     d.setDate(d.getDate() - 1);
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
 
-export function formatTime(totalSeconds) {
+function formatTime(totalSeconds) {
     if (!totalSeconds) totalSeconds = 0;
     const m = Math.floor(totalSeconds / 60);
     const s = totalSeconds % 60;
     return `${m.toString().padStart(2, '0')} : ${s.toString().padStart(2, '0')}`;
 }
 
-export function saveStats() {
+function saveStats() {
     if (!state.currentGrade) return;
     localStorage.setItem(`toan_stats_grade_${state.currentGrade}`, JSON.stringify({
         date: getTodayString(),
@@ -33,7 +31,7 @@ export function saveStats() {
     }));
 }
 
-export function loadStats() {
+function loadStats() {
     if (!state.currentGrade) return null;
     try {
         const raw = localStorage.getItem(`toan_stats_grade_${state.currentGrade}`);
@@ -47,7 +45,7 @@ export function loadStats() {
     return null;
 }
 
-export function resetStats() {
+function resetStats() {
     const saved = loadStats();
     if (saved) {
         state.streakAchievedToday = saved.streakAchievedToday || false;
@@ -75,7 +73,7 @@ export function resetStats() {
     }
 }
 
-export function initTimer() {
+function initTimer() {
     if (state.timerInterval) clearInterval(state.timerInterval);
     const el = document.getElementById('total-minutes');
     if (el) el.textContent = formatTime(state.stats.secondsSpent);
@@ -88,7 +86,7 @@ export function initTimer() {
     }, 1000);
 }
 
-export function updateStatsUI() {
+function updateStatsUI() {
     const get = (id) => document.getElementById(id);
     const tq = get('total-questions');
     const cc = get('correct-count');

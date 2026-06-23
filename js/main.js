@@ -1,10 +1,4 @@
-import { state, girlMascots, boyMascots } from './state.js';
-import { resetStats, initTimer } from './stats.js';
-import { checkDailyLogin, checkStreakBreak, loadGlobal, addStars, renderStreakBar } from './streak-stars.js';
-import { renderQuestion, checkAnswer } from './game-engine.js';
-
-// DOM element references used in this module
-export const elements = {
+const elements = {
     appBody: document.getElementById('app-body'),
     selectionScreen: document.getElementById('selection-screen'),
     mainContainer: document.getElementById('main-container'),
@@ -37,7 +31,6 @@ function startApp(grade, theme) {
     elements.mascotCompanion.classList.add('pop-in');
     setTimeout(() => elements.mascotCompanion.classList.remove('pop-in'), 600);
 
-    // Streak & stars setup
     checkStreakBreak(theme);
     checkDailyLogin(theme);
 
@@ -51,7 +44,6 @@ function resetToSelection() {
     if (state.timerInterval) clearInterval(state.timerInterval);
     elements.mainContainer.classList.add('hidden');
     elements.selectionScreen.classList.remove('hidden');
-    // Fix Phase 1 bug: was state.appBody (undefined) — must use elements.appBody
     elements.appBody.removeAttribute('data-theme');
     elements.streakBar?.classList.add('hidden');
 }
@@ -60,10 +52,9 @@ function openRedeemModal() {
     const global = loadGlobal(state.currentTheme);
     const starsEl = document.getElementById('redeem-stars-val');
     const streakEl = document.getElementById('redeem-streak-val');
-    const remEl = elements.redeemRemainingVal;
     if (starsEl) starsEl.textContent = global.stars;
     if (streakEl) streakEl.textContent = global.streak;
-    if (remEl) remEl.textContent = global.stars;
+    if (elements.redeemRemainingVal) elements.redeemRemainingVal.textContent = global.stars;
     if (elements.redeemAmount) elements.redeemAmount.value = '';
     elements.redeemModal?.classList.remove('hidden');
 }
@@ -76,7 +67,6 @@ function handleRedeem() {
     const starsEl = document.getElementById('redeem-stars-val');
     if (starsEl) starsEl.textContent = newStars;
     renderStreakBar(state.currentTheme);
-    // Show brief toast feedback
     const btn = elements.btnRedeemConfirm;
     if (btn) {
         const orig = btn.textContent;
@@ -91,7 +81,7 @@ window.visualViewport?.addEventListener('resize', () => {
         ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
-// Redeem amount input: live update remaining display
+// Live update remaining stars as user types redeem amount
 elements.redeemAmount?.addEventListener('input', () => {
     const global = loadGlobal(state.currentTheme);
     const amount = parseInt(elements.redeemAmount.value) || 0;
@@ -99,7 +89,6 @@ elements.redeemAmount?.addEventListener('input', () => {
     if (elements.redeemRemainingVal) elements.redeemRemainingVal.textContent = remaining;
 });
 
-// Event wiring
 elements.selectGirl?.addEventListener('click', () => startApp(4, 'girl'));
 elements.selectBoy?.addEventListener('click', () => startApp(1, 'boy'));
 elements.btnBack?.addEventListener('click', resetToSelection);

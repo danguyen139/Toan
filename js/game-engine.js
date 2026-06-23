@@ -1,7 +1,3 @@
-import { state, formatVN } from './state.js';
-import { showSuccess, showError, triggerStreakCelebration, triggerStarMilestone } from './effects.js';
-import { saveStats, updateStatsUI } from './stats.js';
-import { addStars, checkStreakAchievement, getGlobalState, renderStreakBar } from './streak-stars.js';
 
 const STAR_MILESTONES = [50, 100, 200, 500, 1000];
 
@@ -12,7 +8,7 @@ const fVN = formatVN;
 
 // --- Clock SVG ---
 
-export function drawClockSVG(h, m) {
+function drawClockSVG(h, m) {
     const hAngle = (h % 12 + m / 60) * 30;
     const mAngle = m * 6;
     let numbers = '';
@@ -33,7 +29,7 @@ export function drawClockSVG(h, m) {
 
 // --- Grade 1 Generators ---
 
-export function generateGrade1Problem() {
+function generateGrade1Problem() {
     const pool = [
         'add','add','add',
         'sub','sub','sub',
@@ -115,7 +111,7 @@ export function generateGrade1Problem() {
 
 // --- Grade 4 Generators ---
 
-export function generateGrade4Problem() {
+function generateGrade4Problem() {
     const pool = [
         'multiply', 'multiply',
         'divide', 'divide',
@@ -233,7 +229,7 @@ export function generateGrade4Problem() {
 
 // --- Render Question ---
 
-export function renderQuestion() {
+function renderQuestion() {
     state.currentProblem = state.currentGrade === 1 ? generateGrade1Problem() : generateGrade4Problem();
     const prob = state.currentProblem;
     const qText = document.getElementById('math-question');
@@ -329,7 +325,7 @@ function wireCompareButtons(container) {
 
 // --- Check Answer ---
 
-export function checkAnswer() {
+function checkAnswer() {
     const prob = state.currentProblem;
     let isCorrect = false;
 
@@ -388,7 +384,7 @@ export function checkAnswer() {
 
 // --- Result Details ---
 
-export function showResultDetails(isCorrect) {
+function showResultDetails(isCorrect) {
     document.getElementById('result-feedback').classList.remove('hidden');
     document.getElementById('btn-check').classList.add('hidden');
     const btnNext = document.getElementById('btn-next');

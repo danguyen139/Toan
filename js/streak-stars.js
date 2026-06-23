@@ -1,6 +1,3 @@
-import { state } from './state.js';
-import { getTodayString, getYesterdayString, saveStats } from './stats.js';
-
 const GLOBAL_DEFAULTS = {
     streak: 0,
     lastStreakDate: '',
@@ -9,7 +6,7 @@ const GLOBAL_DEFAULTS = {
     dailyLoginDate: ''
 };
 
-export function loadGlobal(theme) {
+function loadGlobal(theme) {
     try {
         const raw = localStorage.getItem(`toan_global_${theme}`);
         if (raw) return { ...GLOBAL_DEFAULTS, ...JSON.parse(raw) };
@@ -17,11 +14,11 @@ export function loadGlobal(theme) {
     return { ...GLOBAL_DEFAULTS };
 }
 
-export function saveGlobal(theme, data) {
+function saveGlobal(theme, data) {
     localStorage.setItem(`toan_global_${theme}`, JSON.stringify(data));
 }
 
-export function checkDailyLogin(theme) {
+function checkDailyLogin(theme) {
     const global = loadGlobal(theme);
     const today = getTodayString();
     if (global.dailyLoginDate !== today) {
@@ -31,24 +28,23 @@ export function checkDailyLogin(theme) {
     }
 }
 
-export function checkStreakBreak(theme) {
+function checkStreakBreak(theme) {
     const global = loadGlobal(theme);
     const yesterday = getYesterdayString();
-    // Reset streak if last activity was before yesterday (gap in learning)
     if (global.lastStreakDate && global.lastStreakDate < yesterday) {
         global.streak = 0;
         saveGlobal(theme, global);
     }
 }
 
-export function addStars(theme, delta) {
+function addStars(theme, delta) {
     const global = loadGlobal(theme);
     global.stars = Math.max(0, global.stars + delta);
     saveGlobal(theme, global);
     return global.stars;
 }
 
-export function checkStreakAchievement(theme, correctCount) {
+function checkStreakAchievement(theme, correctCount) {
     if (correctCount < 30) return false;
     if (state.streakAchievedToday) return false;
     const global = loadGlobal(theme);
@@ -60,11 +56,11 @@ export function checkStreakAchievement(theme, correctCount) {
     return true;
 }
 
-export function getGlobalState(theme) {
+function getGlobalState(theme) {
     return loadGlobal(theme);
 }
 
-export function renderStreakBar(theme) {
+function renderStreakBar(theme) {
     const bar = document.getElementById('streak-bar');
     if (!bar) return;
     const global = loadGlobal(theme);

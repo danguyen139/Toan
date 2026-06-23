@@ -1,9 +1,7 @@
-import { state, girlPraise, boyPraise, encouragements, girlMascots, boyMascots } from './state.js';
-
 let milestoneQueue = [];
 let milestoneActive = false;
 
-export function showSuccess() {
+function showSuccess() {
     const colors = state.currentTheme === 'girl'
         ? ['#d946ef', '#f472b6', '#ffffff']
         : ['#2563eb', '#dc2626', '#fcd34d'];
@@ -35,7 +33,7 @@ export function showSuccess() {
     if (rfEl) rfEl.className = 'result-feedback feedback-correct';
 }
 
-export function showError() {
+function showError() {
     const msg = encouragements[Math.floor(Math.random() * encouragements.length)];
     const praiseEl = document.getElementById('praise-message');
     if (praiseEl) { praiseEl.textContent = msg; praiseEl.style.color = 'var(--error)'; }
@@ -52,7 +50,7 @@ export function showError() {
     if (rfEl) rfEl.className = 'result-feedback feedback-wrong';
 }
 
-export function spawnParticles(emoji, count = 8) {
+function spawnParticles(emoji, count = 8) {
     const container = document.querySelector('.question-container');
     if (!container) return;
     for (let i = 0; i < count; i++) {
@@ -66,7 +64,7 @@ export function spawnParticles(emoji, count = 8) {
     }
 }
 
-export function playMilestoneOverlay(emoji, message) {
+function playMilestoneOverlay(emoji, message) {
     milestoneQueue.push({ emoji, message });
     if (!milestoneActive) processNextMilestone();
 }
@@ -88,10 +86,10 @@ function processNextMilestone() {
     }, 2500);
 }
 
-export function triggerStreakCelebration(streakCount) {
+function triggerStreakCelebration(streakCount) {
     playMilestoneOverlay('🔥', `${streakCount} ngày liên tục! Tuyệt vời!`);
 }
 
-export function triggerStarMilestone(stars) {
+function triggerStarMilestone(stars) {
     playMilestoneOverlay('⭐', `Đạt ${stars} sao! Xuất sắc!`);
 }
