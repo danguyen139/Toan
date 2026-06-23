@@ -1,0 +1,91 @@
+import { state } from './state.js';
+import { getTodayString, getYesterdayString, saveStats } from './stats.js';
+
+const GLOBAL_DEFAULTS = {
+    streak: 0,
+    lastStreakDate: '',
+    stars: 0,
+    totalSecondsAllTime: 0,
+    dailyLoginDate: ''
+};
+
+export function loadGlobal(theme) {
+    try {
+        const raw = localStorage.getItem(`toan_global_${theme}`);
+        if (raw) return { ...GLOBAL_DEFAULTS, ...JSON.parse(raw) };
+    } catch (e) {}
+    return { ...GLOBAL_DEFAULTS };
+}
+
+export function saveGlobal(theme, data) {
+    localStorage.setItem(`toan_global_${theme}`, JSON.stringify(data));
+}
+
+export function checkDailyLogin(theme) {
+    const global = loadGlobal(theme);
+    const today = getTodayString();
+    if (global.dailyLoginDate !== today) {
+        global.dailyLoginDate = today;
+        global.stars += 5;
+        saveGlobal(theme, global);
+    }
+}
+
+export function checkStreakBreak(theme) {
+    const global = loadGlobal(theme);
+    const yesterday = getYesterdayString();
+    // Reset streak if last activity was before yesterday (gap in learning)
+    if (global.lastStreakDate && global.lastStreakDate < yesterday) {
+        global.streak = 0;
+        saveGlobal(theme, global);
+    }
+}
+
+export function addStars(theme, delta) {
+    const global = loadGlobal(theme);
+    global.stars = Math.max(0, global.stars + delta);
+    saveGlobal(theme, global);
+    return global.stars;
+}
+
+export function checkStreakAchievement(theme, correctCount) {
+    if (correctCount < 30) return false;
+    if (state.streakAchievedToday) return false;
+    const global = loadGlobal(theme);
+    global.streak += 1;
+    global.lastStreakDate = getTodayString();
+    saveGlobal(theme, global);
+    state.streakAchievedToday = true;
+    saveStats();
+    return true;
+}
+
+export function getGlobalState(theme) {
+    return loadGlobal(theme);
+}
+
+export function renderStreakBar(theme) {
+    const bar = document.getElementById('streak-bar');
+    if (!bar) return;
+    const global = loadGlobal(theme);
+    const correct = state.stats.correctCount || 0;
+
+    const streakEl = document.getElementById('streak-count');
+    const starsEl = document.getElementById('stars-count');
+    const dailyEl = document.getElementById('daily-correct-count');
+    const fill = document.getElementById('streak-progress-fill');
+    const redeemStars = document.getElementById('redeem-stars-val');
+    const redeemStreak = document.getElementById('redeem-streak-val');
+
+    if (streakEl) streakEl.textContent = global.streak;
+    if (starsEl) starsEl.textContent = global.stars;
+    if (dailyEl) dailyEl.textContent = correct;
+    if (fill) fill.style.width = `${Math.min(100, (correct / 30) * 100)}%`;
+    if (redeemStars) redeemStars.textContent = global.stars;
+    if (redeemStreak) redeemStreak.textContent = global.streak;
+    if (state.streakAchievedToday) {
+        const qBox = document.getElementById('question-box');
+        if (qBox) qBox.classList.add('bonus-mode');
+    }
+    bar.classList.remove('hidden');
+}

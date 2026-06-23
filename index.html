@@ -34,7 +34,7 @@
 
     <!-- Main Content Container -->
     <div id="main-container" class="container hidden">
-        <!-- Statistics Section -->
+        <!-- Statistics Header -->
         <header class="stats-card">
             <button id="btn-back" class="btn-icon-back">← Đổi bạn học</button>
             <div class="stats-grid">
@@ -65,17 +65,30 @@
             </div>
         </header>
 
+        <!-- Streak Bar -->
+        <div id="streak-bar" class="streak-bar hidden">
+            <div class="streak-info">
+                <span class="streak-item">🔥 <strong id="streak-count">0</strong> ngày</span>
+                <span class="streak-item">⭐ <strong id="stars-count">0</strong> sao</span>
+                <span class="streak-item">🎯 <strong id="daily-correct-count">0</strong>/30</span>
+            </div>
+            <div class="streak-progress-wrap">
+                <div id="streak-progress-fill" class="streak-progress-fill"></div>
+            </div>
+            <button id="btn-redeem" class="btn-redeem">🎁 Đổi quà</button>
+        </div>
+
         <!-- Main Question Section -->
         <main class="question-container">
             <div id="praise-message" class="praise-banner"></div>
-            
+
             <div id="question-box" class="question-box">
                 <div class="question-text" id="math-question">
                     Đang tải câu hỏi...
                 </div>
-                
+
                 <div id="answer-inputs" class="answer-inputs">
-                    <!-- Dynamic inputs based on type -->
+                    <!-- Dynamic inputs rendered by game-engine.js -->
                 </div>
 
                 <div class="action-buttons">
@@ -89,13 +102,39 @@
                 </div>
             </div>
 
-            <!-- Mascot Companion (Persistent & Animated) -->
+            <!-- Mascot Companion -->
             <div id="mascot-companion" class="mascot-companion">
                 <img id="mascot-icon" src="" alt="">
             </div>
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Redeem Modal -->
+    <div id="redeem-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>🎁 Đổi Quà</h2>
+            <p>🔥 Streak: <strong id="redeem-streak-val">0</strong> ngày liên tục</p>
+            <p>⭐ Sao tích luỹ: <strong id="redeem-stars-val">0</strong> sao</p>
+            <div class="redeem-input-row">
+                <label>Đổi bao nhiêu sao?</label>
+                <input type="number" id="redeem-amount" min="1" placeholder="0">
+            </div>
+            <p class="redeem-remaining">Còn lại: <span id="redeem-remaining-val">0</span> sao</p>
+            <div class="modal-actions">
+                <button id="btn-redeem-confirm" class="btn btn-primary">Xác nhận</button>
+                <button id="btn-redeem-close" class="btn btn-secondary">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestone Overlay (CSS-only animation, no Lottie) -->
+    <div id="milestone-overlay" class="milestone-overlay hidden">
+        <div class="milestone-content">
+            <div class="milestone-emoji" id="milestone-emoji">🔥</div>
+            <p class="milestone-message" id="milestone-message"></p>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
