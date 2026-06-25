@@ -45,22 +45,22 @@ function generateGrade1Problem() {
     let p = { type };
 
     if (type === 'add') {
-        const a = rand(100, 7000);
-        const b = rand(100, Math.min(2999, 9999 - a));
+        const a = rand(100, 900);
+        const b = rand(100, 900);
         p.text = `${fVN(a)} + ${fVN(b)} = ?`;
         p.answer = a + b;
     } else if (type === 'sub') {
-        const a = rand(200, 9999);
-        const b = rand(1, a - 1);
+        const a = rand(200, 999);
+        const b = rand(100, a - 1);
         p.text = `${fVN(a)} - ${fVN(b)} = ?`;
         p.answer = a - b;
     } else if (type === 'compare') {
-        const a = rand(100, 9999), b = rand(100, 9999);
+        const a = rand(100, 999), b = rand(100, 999);
         p.text = `${fVN(a)} ... ${fVN(b)}`;
         p.answer = a > b ? '>' : (a < b ? '<' : '=');
         p.isCompare = true;
     } else if (type === 'missing') {
-        const c = rand(200, 9000);
+        const c = rand(200, 999);
         const a = rand(100, c - 100);
         const pos = Math.random() > 0.5 ? 'first' : 'second';
         p.text = pos === 'first' ? `? + ${fVN(a)} = ${fVN(c)}` : `${fVN(a)} + ? = ${fVN(c)}`;
@@ -72,15 +72,15 @@ function generateGrade1Problem() {
         p.isClock = true;
         p.text = 'Bé hãy xem đồng hồ và cho biết mấy giờ nhé!';
     } else if (type === 'two_step') {
-        const a = rand(1000, 5000);
+        const a = rand(200, 500);
         const op1 = Math.random() > 0.5 ? '+' : '-';
         let b, mid;
-        if (op1 === '+') { b = rand(100, Math.min(3000, 9999 - a)); mid = a + b; }
-        else { b = rand(100, a - 100); mid = a - b; }
+        if (op1 === '+') { b = rand(100, Math.min(400, 800 - a)); mid = a + b; }
+        else { b = rand(50, a - 100); mid = a - b; }
         const op2 = Math.random() > 0.5 ? '+' : '-';
         let c, answer;
-        if (op2 === '+') { c = rand(100, Math.min(2000, 9999 - mid)); answer = mid + c; }
-        else { c = rand(100, mid - 1); answer = mid - c; }
+        if (op2 === '+') { c = rand(50, Math.min(400, 999 - mid)); answer = mid + c; }
+        else { c = rand(10, mid - 1); answer = mid - c; }
         p.text = `${fVN(a)} ${op1} ${fVN(b)} ${op2} ${fVN(c)} = ?`;
         p.answer = answer;
     } else if (type === 'sequence') {
@@ -99,10 +99,10 @@ function generateGrade1Problem() {
         p.isOddEven = true;
     } else { // simple_word
         const templates = [
-            () => { const a = rand(1000, 8000), b = rand(100, Math.min(a - 1, 2000)); return { text: `Có ${fVN(a)} quả táo, thêm ${fVN(b)} quả nữa. Tất cả có mấy quả?`, answer: a + b }; },
-            () => { const a = rand(1000, 8000), b = rand(100, Math.min(a - 1, 2000)); return { text: `Có ${fVN(a)} viên bi, cho bạn ${fVN(b)} viên. Còn mấy viên?`, answer: a - b }; },
-            () => { const a = rand(1000, 8000), b = rand(100, Math.min(a - 1, 2000)); return { text: `Lớp có ${fVN(a)} học sinh, thêm ${fVN(b)} bạn chuyển đến. Lớp có bao nhiêu bạn?`, answer: a + b }; },
-            () => { const a = rand(2000, 8000), b = rand(100, Math.min(a - 1, 2000)); return { text: `Mẹ có ${fVN(a)} đồng, mua đồ hết ${fVN(b)} đồng. Mẹ còn mấy đồng?`, answer: a - b }; },
+            () => { const a = rand(100, 700), b = rand(100, 500); return { text: `Có ${fVN(a)} quả táo, thêm ${fVN(b)} quả nữa. Tất cả có mấy quả?`, answer: a + b }; },
+            () => { const a = rand(300, 900), b = rand(100, a - 100); return { text: `Có ${fVN(a)} viên bi, cho bạn ${fVN(b)} viên. Còn mấy viên?`, answer: a - b }; },
+            () => { const a = rand(100, 700), b = rand(100, 500); return { text: `Lớp có ${fVN(a)} học sinh, thêm ${fVN(b)} bạn chuyển đến. Lớp có bao nhiêu bạn?`, answer: a + b }; },
+            () => { const a = rand(300, 900), b = rand(100, a - 100); return { text: `Mẹ có ${fVN(a)} đồng, mua đồ hết ${fVN(b)} đồng. Mẹ còn mấy đồng?`, answer: a - b }; },
         ];
         Object.assign(p, randFrom(templates)());
     }
