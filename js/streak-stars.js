@@ -31,10 +31,19 @@ function checkDailyLogin(theme) {
 function checkStreakBreak(theme) {
     const global = loadGlobal(theme);
     const yesterday = getYesterdayString();
-    if (global.lastStreakDate && global.lastStreakDate < yesterday) {
+    // normDate handles old non-padded dates stored before the format fix
+    if (global.lastStreakDate && normDate(global.lastStreakDate) < yesterday) {
         global.streak = 0;
         saveGlobal(theme, global);
     }
+}
+
+function compensateStreak(theme) {
+    const global = loadGlobal(theme);
+    global.streak = (global.streak || 0) + 1;
+    // Set lastStreakDate to yesterday so today's session can extend the streak
+    global.lastStreakDate = getYesterdayString();
+    saveGlobal(theme, global);
 }
 
 function addStars(theme, delta) {

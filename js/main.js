@@ -15,7 +15,13 @@ const elements = {
     redeemAmount: document.getElementById('redeem-amount'),
     redeemRemainingVal: document.getElementById('redeem-remaining-val'),
     btnRedeemConfirm: document.getElementById('btn-redeem-confirm'),
-    btnRedeemClose: document.getElementById('btn-redeem-close')
+    btnRedeemClose: document.getElementById('btn-redeem-close'),
+    btnCompensate: document.getElementById('btn-compensate'),
+    compensateModal: document.getElementById('compensate-modal'),
+    compensatePassword: document.getElementById('compensate-password'),
+    compensateError: document.getElementById('compensate-error'),
+    btnCompensateConfirm: document.getElementById('btn-compensate-confirm'),
+    btnCompensateClose: document.getElementById('btn-compensate-close'),
 };
 
 function updateStickerField(theme) {
@@ -119,3 +125,27 @@ elements.btnNext?.addEventListener('click', renderQuestion);
 elements.btnRedeem?.addEventListener('click', openRedeemModal);
 elements.btnRedeemConfirm?.addEventListener('click', handleRedeem);
 elements.btnRedeemClose?.addEventListener('click', () => elements.redeemModal?.classList.add('hidden'));
+
+elements.btnCompensate?.addEventListener('click', () => {
+    if (elements.compensatePassword) elements.compensatePassword.value = '';
+    elements.compensateError?.classList.add('hidden');
+    elements.compensateModal?.classList.remove('hidden');
+    setTimeout(() => elements.compensatePassword?.focus(), 100);
+});
+
+function handleCompensate() {
+    const pwd = elements.compensatePassword?.value || '';
+    if (pwd === 'MeoGau') {
+        compensateStreak(state.currentTheme);
+        renderStreakBar(state.currentTheme);
+        elements.compensateModal?.classList.add('hidden');
+    } else {
+        elements.compensateError?.classList.remove('hidden');
+        if (elements.compensatePassword) elements.compensatePassword.value = '';
+        elements.compensatePassword?.focus();
+    }
+}
+
+elements.btnCompensateConfirm?.addEventListener('click', handleCompensate);
+elements.compensatePassword?.addEventListener('keypress', e => { if (e.key === 'Enter') handleCompensate(); });
+elements.btnCompensateClose?.addEventListener('click', () => elements.compensateModal?.classList.add('hidden'));

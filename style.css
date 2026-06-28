@@ -492,6 +492,34 @@ input[type="number"]:focus {
 }
 .btn-redeem:hover { transform: scale(1.05); }
 
+/* Streak actions row — holds Đổi quà + Bù streak side by side */
+.streak-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Bù streak variant: same shape as btn-redeem but softer */
+.btn-compensate-streak {
+    background: rgba(255,255,255,0.55) !important;
+    color: #374151 !important;
+    font-size: 0.85rem !important;
+    border: 1px solid rgba(255,255,255,0.6) !important;
+}
+
+/* Password input inside modal */
+.input-modal-password {
+    width: 100%; padding: 10px 14px; margin: 10px 0;
+    border: 2px solid #e5e7eb; border-radius: 10px;
+    font-size: 1.1rem; font-family: inherit; box-sizing: border-box;
+    text-align: center; letter-spacing: 2px;
+}
+.input-modal-password:focus { outline: none; border-color: var(--primary); }
+
+/* Compensate error message */
+.compensate-error { color: var(--error); font-weight: 600; margin: 4px 0; }
+
+/* Mobile: stack both streak action buttons when small */
+@media (max-width: 480px) {
+    .btn-compensate-streak { font-size: 0.75rem !important; padding: 5px 9px !important; }
+}
+
 /* ── Bonus Mode ── */
 .question-box.bonus-mode {
     border: 3px solid gold;

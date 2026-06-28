@@ -75,7 +75,10 @@
             <div class="streak-progress-wrap">
                 <div id="streak-progress-fill" class="streak-progress-fill"></div>
             </div>
-            <button id="btn-redeem" class="btn-redeem">🎁 Đổi quà</button>
+            <div class="streak-actions">
+                <button id="btn-redeem" class="btn-redeem">🎁 Đổi quà</button>
+                <button id="btn-compensate" class="btn-redeem btn-compensate-streak" title="Bố mẹ bù streak cho bé">🔑 Bù streak</button>
+            </div>
         </div>
 
         <!-- Main Question Section -->
@@ -132,6 +135,20 @@
         <div class="milestone-content">
             <div class="milestone-emoji" id="milestone-emoji">🔥</div>
             <p class="milestone-message" id="milestone-message"></p>
+        </div>
+    </div>
+
+    <!-- Parent Streak Compensate Modal -->
+    <div id="compensate-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>🔑 Bù Streak Cho Bé</h2>
+            <p style="margin-bottom:8px">Nhập mật khẩu bố mẹ để bù 1 ngày streak:</p>
+            <input type="password" id="compensate-password" class="input-modal-password" placeholder="Mật khẩu...">
+            <p id="compensate-error" class="compensate-error hidden">❌ Sai mật khẩu, thử lại nhé!</p>
+            <div class="modal-actions">
+                <button id="btn-compensate-confirm" class="btn btn-primary">Xác nhận bù</button>
+                <button id="btn-compensate-close" class="btn btn-secondary">Đóng</button>
+            </div>
         </div>
     </div>
 

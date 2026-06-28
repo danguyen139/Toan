@@ -1,12 +1,23 @@
+function padDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+// Normalize old non-padded dates ("2026-6-5") to padded ("2026-06-05") for safe string comparison
+function normDate(s) {
+    if (!s) return s;
+    const p = s.split('-');
+    if (p.length !== 3) return s;
+    return `${p[0]}-${p[1].padStart(2, '0')}-${p[2].padStart(2, '0')}`;
+}
+
 function getTodayString() {
-    const d = new Date();
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    return padDate(new Date());
 }
 
 function getYesterdayString() {
     const d = new Date();
     d.setDate(d.getDate() - 1);
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    return padDate(d);
 }
 
 function formatTime(totalSeconds) {
@@ -37,7 +48,7 @@ function loadStats() {
         const raw = localStorage.getItem(`toan_stats_grade_${state.currentGrade}`);
         if (raw) {
             const data = JSON.parse(raw);
-            if (data.date === getTodayString()) return data.stats;
+            if (normDate(data.date) === getTodayString()) return data.stats;
         }
     } catch (e) {
         console.error(e);
