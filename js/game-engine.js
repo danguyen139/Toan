@@ -33,17 +33,15 @@ function generateGrade1Problem() {
     const pool = [
         'add','add','add',
         'sub','sub','sub',
-        'two_step','two_step',
         'compare','compare',
         'missing','missing',
         'clock','clock',
         'sequence','sequence',
-        'simple_word','simple_word',
+        'simple_word','simple_word','simple_word',
         'odd_even',
         'before_after','before_after','before_after',
         'place_value','place_value',
         'expression_compare','expression_compare',
-        'two_step_word','two_step_word','two_step_word',
     ];
     const type = randFrom(pool);
     let p = { type };
