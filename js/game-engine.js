@@ -33,35 +33,40 @@ function generateGrade1Problem() {
     const pool = [
         'add','add','add',
         'sub','sub','sub',
-        'two_step','two_step','two_step',
+        'two_step','two_step',
         'compare','compare',
         'missing','missing',
         'clock','clock',
         'sequence','sequence',
         'simple_word','simple_word',
-        'odd_even'
+        'odd_even',
+        'before_after','before_after','before_after',
+        'place_value','place_value',
+        'expression_compare','expression_compare',
+        'two_step_word','two_step_word','two_step_word',
     ];
     const type = randFrom(pool);
     let p = { type };
 
     if (type === 'add') {
-        const a = rand(100, 900);
-        const b = rand(100, 900);
+        // Ensure sum ≤ 999
+        const a = rand(10, 500);
+        const b = rand(10, Math.min(489, 999 - a));
         p.text = `${fVN(a)} + ${fVN(b)} = ?`;
         p.answer = a + b;
     } else if (type === 'sub') {
-        const a = rand(200, 999);
-        const b = rand(100, a - 1);
+        const a = rand(20, 999);
+        const b = rand(1, a - 1);
         p.text = `${fVN(a)} - ${fVN(b)} = ?`;
         p.answer = a - b;
     } else if (type === 'compare') {
-        const a = rand(100, 999), b = rand(100, 999);
+        const a = rand(1, 999), b = rand(1, 999);
         p.text = `${fVN(a)} ... ${fVN(b)}`;
         p.answer = a > b ? '>' : (a < b ? '<' : '=');
         p.isCompare = true;
     } else if (type === 'missing') {
-        const c = rand(200, 999);
-        const a = rand(100, c - 100);
+        const c = rand(11, 999);
+        const a = rand(1, c - 1);
         const pos = Math.random() > 0.5 ? 'first' : 'second';
         p.text = pos === 'first' ? `? + ${fVN(a)} = ${fVN(c)}` : `${fVN(a)} + ? = ${fVN(c)}`;
         p.answer = c - a;
@@ -84,25 +89,72 @@ function generateGrade1Problem() {
         p.text = `${fVN(a)} ${op1} ${fVN(b)} ${op2} ${fVN(c)} = ?`;
         p.answer = answer;
     } else if (type === 'sequence') {
-        const step = randFrom([2, 5, 10, 25, 50, 100, 250, 500, 1000]);
-        const maxMult = Math.floor((9999 - 4 * step) / step);
-        const start = rand(0, Math.max(0, maxMult)) * step;
+        // All numbers ≤ 999
+        const step = randFrom([1, 2, 5, 10, 20, 25, 50, 100]);
+        const maxStartMult = Math.floor((999 - 4 * step) / step);
+        const start = rand(0, Math.max(0, maxStartMult)) * step;
         const nums = [0, 1, 2, 3, 4].map(i => start + i * step);
         const blankIdx = rand(1, 3);
         p.answer = nums[blankIdx];
         p.text = nums.map((n, i) => i === blankIdx ? '?' : fVN(n)).join(', ');
         p.isSequence = true;
     } else if (type === 'odd_even') {
-        const n = rand(1, 5000);
+        // Limit to 3 digits
+        const n = rand(1, 999);
         p.text = `Số ${fVN(n)} là số chẵn hay lẻ?`;
         p.answer = n % 2 === 0 ? 'chẵn' : 'lẻ';
         p.isOddEven = true;
-    } else { // simple_word
+    } else if (type === 'simple_word') {
         const templates = [
-            () => { const a = rand(100, 700), b = rand(100, 500); return { text: `Có ${fVN(a)} quả táo, thêm ${fVN(b)} quả nữa. Tất cả có mấy quả?`, answer: a + b }; },
-            () => { const a = rand(300, 900), b = rand(100, a - 100); return { text: `Có ${fVN(a)} viên bi, cho bạn ${fVN(b)} viên. Còn mấy viên?`, answer: a - b }; },
-            () => { const a = rand(100, 700), b = rand(100, 500); return { text: `Lớp có ${fVN(a)} học sinh, thêm ${fVN(b)} bạn chuyển đến. Lớp có bao nhiêu bạn?`, answer: a + b }; },
-            () => { const a = rand(300, 900), b = rand(100, a - 100); return { text: `Mẹ có ${fVN(a)} đồng, mua đồ hết ${fVN(b)} đồng. Mẹ còn mấy đồng?`, answer: a - b }; },
+            () => { const a = rand(50, 499), b = rand(10, Math.min(449, 999 - a)); return { text: `Có ${fVN(a)} quả táo, thêm ${fVN(b)} quả nữa. Tất cả có mấy quả?`, answer: a + b }; },
+            () => { const a = rand(20, 999), b = rand(1, a - 1); return { text: `Có ${fVN(a)} viên bi, cho bạn ${fVN(b)} viên. Còn mấy viên?`, answer: a - b }; },
+            () => { const a = rand(50, 499), b = rand(10, Math.min(449, 999 - a)); return { text: `Lớp có ${fVN(a)} học sinh, thêm ${fVN(b)} bạn chuyển đến. Lớp có bao nhiêu bạn?`, answer: a + b }; },
+            () => { const a = rand(20, 999), b = rand(1, a - 1); return { text: `Mẹ có ${fVN(a)} đồng, mua đồ hết ${fVN(b)} đồng. Mẹ còn mấy đồng?`, answer: a - b }; },
+        ];
+        Object.assign(p, randFrom(templates)());
+    } else if (type === 'before_after') {
+        // Tư duy: số liền trước / liền sau
+        const n = rand(101, 998);
+        const isBefore = Math.random() > 0.5;
+        p.text = isBefore ? `Số liền trước của ${fVN(n)} là?` : `Số liền sau của ${fVN(n)} là?`;
+        p.answer = isBefore ? n - 1 : n + 1;
+    } else if (type === 'place_value') {
+        // Tư duy: giá trị hàng trăm / hàng chục / hàng đơn vị
+        const n = rand(100, 999);
+        const part = randFrom(['hundreds', 'tens', 'ones']);
+        const labels = { hundreds: 'hàng trăm', tens: 'hàng chục', ones: 'hàng đơn vị' };
+        p.text = `Số ${fVN(n)}: chữ số ${labels[part]} là?`;
+        p.answer = part === 'hundreds' ? Math.floor(n / 100) : (part === 'tens' ? Math.floor((n % 100) / 10) : n % 10);
+    } else if (type === 'expression_compare') {
+        // Tư duy: so sánh hai biểu thức
+        const a1 = rand(10, 400), b1 = rand(10, Math.min(389, 999 - a1));
+        const a2 = rand(10, 400), b2 = rand(10, Math.min(389, 999 - a2));
+        const v1 = a1 + b1, v2 = a2 + b2;
+        p.text = `${fVN(a1)} + ${fVN(b1)} ... ${fVN(a2)} + ${fVN(b2)}`;
+        p.answer = v1 > v2 ? '>' : (v1 < v2 ? '<' : '=');
+        p.isCompare = true;
+    } else { // two_step_word
+        // Tư duy: toán văn hai bước
+        const templates = [
+            () => {
+                const a = rand(30, 200), b = rand(5, 50);
+                const c = rand(5, Math.min(40, a + b - 1));
+                return { text: `Bình có ${fVN(a)} viên bi, nhặt thêm ${fVN(b)} viên, rồi cho bạn ${fVN(c)} viên. Bình còn mấy viên bi?`, answer: a + b - c };
+            },
+            () => {
+                const total = rand(50, 500), part1 = rand(10, total - 10);
+                return { text: `Có ${fVN(total)} cái kẹo xếp vào 2 hộp. Hộp thứ nhất có ${fVN(part1)} cái. Hộp thứ hai có mấy cái?`, answer: total - part1 };
+            },
+            () => {
+                const boys = rand(10, 100), girls = rand(10, Math.min(100, 999 - boys));
+                const leave = rand(1, Math.min(boys, girls) - 1);
+                return { text: `Lớp có ${fVN(boys)} bạn nam và ${fVN(girls)} bạn nữ. Có ${fVN(leave)} bạn về sớm. Lớp còn mấy bạn?`, answer: boys + girls - leave };
+            },
+            () => {
+                const morning = rand(20, 300), afternoon = rand(10, Math.min(200, 999 - morning));
+                const remain = rand(5, Math.min(50, morning + afternoon - 5));
+                return { text: `Buổi sáng làm được ${fVN(morning)} cái bánh, buổi chiều làm thêm ${fVN(afternoon)} cái. Bán đi còn lại ${fVN(remain)} cái. Đã bán mấy cái?`, answer: morning + afternoon - remain };
+            },
         ];
         Object.assign(p, randFrom(templates)());
     }
@@ -124,7 +176,12 @@ function generateGrade4Problem() {
         'decimal', 'decimal',
         'fraction_compare', 'fraction_compare',
         'square_geometry',
-        'word_problem4', 'word_problem4', 'word_problem4'
+        'word_problem4', 'word_problem4', 'word_problem4',
+        'average', 'average',
+        'inverse_problem', 'inverse_problem',
+        'fraction_word', 'fraction_word', 'fraction_word',
+        'times_more', 'times_more',
+        'multi_step_word', 'multi_step_word', 'multi_step_word',
     ];
     const type = randFrom(pool);
     let p = { type };
@@ -206,7 +263,7 @@ function generateGrade4Problem() {
         const isArea = Math.random() > 0.5;
         p.text = isArea ? `Diện tích hình vuông cạnh ${side}cm: ? cm²` : `Chu vi hình vuông cạnh ${side}cm: ? cm`;
         p.answer = isArea ? side * side : side * 4;
-    } else { // word_problem4
+    } else if (type === 'word_problem4') {
         const templates = [
             () => { const pr = rand(1, 9) * 1000 + 500, q = rand(2, 9); return { text: `Mua ${q} quyển vở, mỗi quyển ${fVN(pr)}đ. Tổng tiền phải trả?`, answer: pr * q }; },
             () => { const tot = rand(5, 20) * 10000, sp = rand(1, 4) * 10000; return { text: `Có ${fVN(tot)}đ, mua đồ hết ${fVN(sp)}đ. Còn lại bao nhiêu?`, answer: tot - sp }; },
@@ -221,6 +278,93 @@ function generateGrade4Problem() {
             },
             () => { const w = rand(5, 30), h = rand(5, 25); return { text: `Vườn hình chữ nhật dài ${w}m, rộng ${h}m. Diện tích là bao nhiêu m²?`, answer: w * h }; },
             () => { const a = rand(100, 500), b = rand(10, 50); return { text: `Một hộp có ${a} cái. ${b} hộp có bao nhiêu cái?`, answer: a * b }; },
+        ];
+        Object.assign(p, randFrom(templates)());
+    } else if (type === 'average') {
+        // Tư duy: trung bình cộng — offsets cancel so average is always integer
+        const count = randFrom([2, 3, 4]);
+        const avg = rand(15, 75);
+        const offsets = Array.from({ length: count - 1 }, () => rand(-8, 8));
+        const lastOffset = -offsets.reduce((s, x) => s + x, 0);
+        const nums = [...offsets, lastOffset].map(o => avg + o);
+        if (nums.every(n => n >= 2 && n <= 150)) {
+            nums.sort(() => Math.random() - 0.5);
+            p.text = `Trung bình cộng của ${nums.join(', ')} là?`;
+        } else {
+            // Fallback: symmetric triple guaranteed to work
+            p.text = `Trung bình cộng của ${avg - 5}, ${avg}, ${avg + 5} là?`;
+        }
+        p.answer = avg;
+    } else if (type === 'inverse_problem') {
+        // Tư duy: bài toán ngược — nghĩ một số, áp dụng phép tính, tìm số ban đầu
+        const a = randFrom([2, 3, 4, 5]);
+        const x = rand(5, 30);
+        const b = rand(5, 50);
+        if (Math.random() > 0.5) {
+            const c = x * a + b;
+            p.text = `Nghĩ một số, nhân với ${a}, cộng thêm ${fVN(b)}, được ${fVN(c)}. Số đó là bao nhiêu?`;
+        } else {
+            const b2 = rand(2, Math.max(2, x * a - 5));
+            const c2 = x * a - b2;
+            p.text = `Nghĩ một số, nhân với ${a}, trừ đi ${fVN(b2)}, được ${fVN(c2)}. Số đó là bao nhiêu?`;
+        }
+        p.answer = x;
+    } else if (type === 'fraction_word') {
+        // Tư duy: phân số trong ngữ cảnh — tìm phần còn lại
+        const d = randFrom([2, 3, 4, 5]);
+        const n = rand(1, d - 1);
+        const mult = rand(5, 15);
+        const total = mult * d;
+        const part = n * mult; // = (n/d) * total
+        const remain = total - part;
+        const templates = [
+            { text: `Lớp có ${fVN(total)} học sinh. ${n}/${d} số học sinh là nữ. Số học sinh nam là?`, answer: remain },
+            { text: `Mẹ mua ${fVN(total)} quả. Đã ăn ${n}/${d} số quả. Còn lại bao nhiêu quả?`, answer: remain },
+            { text: `Vườn có ${fVN(total)} cây. ${n}/${d} là cây ổi. Số cây không phải ổi là?`, answer: remain },
+            { text: `Có ${fVN(total)} cái bánh. Tặng đi ${n}/${d} số bánh. Còn lại mấy cái?`, answer: remain },
+        ];
+        Object.assign(p, randFrom(templates));
+    } else if (type === 'times_more') {
+        // Tư duy: gấp bao nhiêu lần
+        const ratio = rand(2, 8);
+        const smaller = rand(5, 50);
+        const larger = smaller * ratio;
+        const variant = randFrom([0, 1, 2]);
+        if (variant === 0) {
+            p.text = `${fVN(larger)} gấp mấy lần ${fVN(smaller)}?`;
+            p.answer = ratio;
+        } else if (variant === 1) {
+            p.text = `Số lớn gấp ${ratio} lần số bé. Số bé là ${fVN(smaller)}. Số lớn là?`;
+            p.answer = larger;
+        } else {
+            p.text = `Số lớn gấp ${ratio} lần số bé. Số lớn là ${fVN(larger)}. Số bé là?`;
+            p.answer = smaller;
+        }
+    } else { // multi_step_word
+        // Tư duy: toán văn hai bước có tư duy
+        const templates = [
+            () => {
+                const prA = rand(1, 9) * 2000, prB = rand(1, 9) * 3000;
+                const qA = rand(2, 5), qB = rand(2, 4);
+                return { text: `Mua ${qA} kg táo giá ${fVN(prA)}đ/kg và ${qB} kg cam giá ${fVN(prB)}đ/kg. Tổng tiền phải trả?`, answer: prA * qA + prB * qB };
+            },
+            () => {
+                const total = rand(5, 20) * 10000, price = rand(1, 5) * 2000, qty = rand(3, 8);
+                const remain = total - price * qty;
+                return { text: `Có ${fVN(total)}đ, mua ${qty} cái giá ${fVN(price)}đ/cái. Còn lại bao nhiêu đồng?`, answer: remain > 0 ? remain : total };
+            },
+            () => {
+                const a = rand(200, 600), b = rand(100, 400);
+                const op = Math.random() > 0.5;
+                return { text: op
+                    ? `Bể thứ nhất chứa ${fVN(a)} lít nước. Bể thứ hai nhiều hơn bể thứ nhất ${fVN(b)} lít. Cả hai bể chứa bao nhiêu lít?`
+                    : `Bể thứ nhất chứa ${fVN(a)} lít. Bể thứ hai ít hơn bể thứ nhất ${fVN(b)} lít. Cả hai bể chứa bao nhiêu lít?`,
+                    answer: op ? a + (a + b) : a + (a - b) };
+            },
+            () => {
+                const workers = rand(3, 8), daily = rand(50, 200), days = rand(2, 5);
+                return { text: `${workers} công nhân, mỗi người làm ${daily} sản phẩm/ngày. Sau ${days} ngày làm được bao nhiêu sản phẩm?`, answer: workers * daily * days };
+            },
         ];
         Object.assign(p, randFrom(templates)());
     }
