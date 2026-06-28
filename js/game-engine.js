@@ -534,6 +534,13 @@ function showResultDetails(isCorrect) {
     const btnNext = document.getElementById('btn-next');
     btnNext.classList.remove('hidden');
 
+    // Lock all inputs/buttons so child cannot re-submit after seeing the answer
+    const answerInputs = document.getElementById('answer-inputs');
+    if (answerInputs) {
+        answerInputs.querySelectorAll('input').forEach(inp => { inp.disabled = true; });
+        answerInputs.querySelectorAll('button').forEach(btn => { btn.disabled = true; });
+    }
+
     const prob = state.currentProblem;
     let correctStr = '';
     if (prob.isDivide) {
