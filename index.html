@@ -32,11 +32,33 @@
         </div>
     </div>
 
+
+    <!-- Subject Selection Screen -->
+    <div id="subject-selection-screen" class="selection-screen hidden">
+        <h1 class="selection-title">Hôm nay học môn gì?</h1>
+        <div class="selection-grid">
+            <div class="selection-card math-card" id="select-math">
+                <div class="card-image-container">
+                    <span style="font-size:80px">🔢</span>
+                </div>
+                <h2>Toán</h2>
+                <p>Luyện tập toán học</p>
+            </div>
+            <div class="selection-card english-card" id="select-english">
+                <div class="card-image-container">
+                    <span style="font-size:80px">🇬🇧</span>
+                </div>
+                <h2>Tiếng Anh</h2>
+                <p>Ôn từ vựng</p>
+            </div>
+        </div>
+    </div>
     <!-- Main Content Container -->
     <div id="main-container" class="container hidden">
         <!-- Statistics Header -->
         <header class="stats-card">
             <button id="btn-back" class="btn-icon-back">← Đổi bạn học</button>
+            <button id="btn-switch-subject" class="btn-icon-back btn-switch-subject">↔ Đổi môn</button>
             <div class="stats-grid">
                 <div class="stat-item">
                     <span class="stat-label">Bắt đầu lúc:</span>
@@ -166,7 +188,11 @@
     <script src="js/stats.js"></script>
     <script src="js/streak-stars.js"></script>
     <script src="js/effects.js"></script>
+    <script src="js/vocab-data-starters.js"></script>
+    <script src="js/vocab-data-a2key.js"></script>
     <script src="js/game-engine.js"></script>
+    <script src="js/english-generators.js"></script>
+    <script src="js/english-engine.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

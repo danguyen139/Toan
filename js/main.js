@@ -22,6 +22,8 @@ const elements = {
     compensateError: document.getElementById('compensate-error'),
     btnCompensateConfirm: document.getElementById('btn-compensate-confirm'),
     btnCompensateClose: document.getElementById('btn-compensate-close'),
+    subjectSelectionScreen: document.getElementById('subject-selection-screen'),
+    btnSwitchSubject: document.getElementById('btn-switch-subject'),
 };
 
 function updateStickerField(theme) {
@@ -48,7 +50,7 @@ function startApp(grade, theme) {
     updateStickerField(theme);
 
     elements.selectionScreen.classList.add('hidden');
-    elements.mainContainer.classList.remove('hidden');
+    elements.subjectSelectionScreen.classList.remove('hidden');
 
     const pool = theme === 'girl' ? girlMascots : boyMascots;
     elements.mascotIcon.src = `assets/${pool[Math.floor(Math.random() * pool.length)]}`;
@@ -57,7 +59,14 @@ function startApp(grade, theme) {
 
     checkStreakBreak(theme);
     checkDailyLogin(theme);
+}
 
+function startSubject(subject) {
+    state.currentSubject = subject;
+    elements.subjectSelectionScreen.classList.add('hidden');
+    elements.mainContainer.classList.remove('hidden');
+
+    const theme = state.currentTheme;
     resetStats();
     initTimer();
     renderStreakBar(theme);
@@ -67,6 +76,7 @@ function startApp(grade, theme) {
 function resetToSelection() {
     if (state.timerInterval) clearInterval(state.timerInterval);
     elements.mainContainer.classList.add('hidden');
+    elements.subjectSelectionScreen?.classList.add('hidden');
     elements.selectionScreen.classList.remove('hidden');
     elements.appBody.removeAttribute('data-theme');
     elements.streakBar?.classList.add('hidden');
@@ -119,6 +129,12 @@ elements.redeemAmount?.addEventListener('input', () => {
 
 elements.selectGirl?.addEventListener('click', () => startApp(4, 'girl'));
 elements.selectBoy?.addEventListener('click', () => startApp(1, 'boy'));
+document.getElementById('select-math')?.addEventListener('click', () => startSubject('math'));
+document.getElementById('select-english')?.addEventListener('click', () => startSubject('english'));
+elements.btnSwitchSubject?.addEventListener('click', () => {
+    elements.mainContainer.classList.add('hidden');
+    elements.subjectSelectionScreen.classList.remove('hidden');
+});
 elements.btnBack?.addEventListener('click', resetToSelection);
 elements.btnCheck?.addEventListener('click', checkAnswer);
 elements.btnNext?.addEventListener('click', renderQuestion);

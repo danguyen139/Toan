@@ -1,6 +1,7 @@
 const state = {
     currentGrade: 0,
     currentTheme: 'girl',
+    currentSubject: 'math',
     stats: {
         startTime: null,
         totalQuestions: 0,

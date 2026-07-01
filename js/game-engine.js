@@ -371,7 +371,7 @@ function generateGrade4Problem() {
 
 // --- Render Question ---
 
-function renderQuestion() {
+function renderMathQuestion() {
     state.currentProblem = state.currentGrade === 1 ? generateGrade1Problem() : generateGrade4Problem();
     const prob = state.currentProblem;
     const qText = document.getElementById('math-question');
@@ -460,14 +460,14 @@ function wireCompareButtons(container) {
             btns.forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             state.selectedCompare = btn.getAttribute('data-val');
-            checkAnswer();
+            checkMathAnswer();
         };
     });
 }
 
 // --- Check Answer ---
 
-function checkAnswer() {
+function checkMathAnswer() {
     const prob = state.currentProblem;
     let isCorrect = false;
 
@@ -522,12 +522,12 @@ function checkAnswer() {
     saveStats();
     updateStatsUI();
     renderStreakBar(theme);
-    showResultDetails(isCorrect);
+    showMathResultDetails(isCorrect);
 }
 
 // --- Result Details ---
 
-function showResultDetails(isCorrect) {
+function showMathResultDetails(isCorrect) {
     document.getElementById('result-feedback').classList.remove('hidden');
     document.getElementById('btn-check').classList.add('hidden');
     const btnNext = document.getElementById('btn-next');
@@ -555,4 +555,19 @@ function showResultDetails(isCorrect) {
     }
     document.getElementById('correct-answer-display').textContent = correctStr;
     btnNext.focus();
+}
+
+// --- Subject Dispatcher (typeof-guard) ---
+
+function renderQuestion() {
+    if (state.currentSubject === 'english' && typeof renderEnglishQuestion === 'function') return renderEnglishQuestion();
+    return renderMathQuestion();
+}
+function checkAnswer() {
+    if (state.currentSubject === 'english' && typeof checkEnglishAnswer === 'function') return checkEnglishAnswer();
+    return checkMathAnswer();
+}
+function showResultDetails(isCorrect) {
+    if (state.currentSubject === 'english' && typeof showEnglishResultDetails === 'function') return showEnglishResultDetails(isCorrect);
+    return showMathResultDetails(isCorrect);
 }
