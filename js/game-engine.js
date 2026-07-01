@@ -506,7 +506,7 @@ function checkMathAnswer() {
         const crossed = STAR_MILESTONES.find(m => prevStars < m && newStars >= m);
         if (crossed) triggerStarMilestone(crossed);
 
-        const justAchieved = checkStreakAchievement(theme, state.stats.correctCount);
+        const justAchieved = checkStreakAchievement(theme, state.currentSubject, state.stats.correctCount);
         if (justAchieved) {
             triggerStreakCelebration(getGlobalState(theme).streak);
             const qBox = document.getElementById('question-box');

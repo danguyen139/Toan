@@ -158,7 +158,7 @@
             }
             var justAchieved = false;
             if (typeof checkStreakAchievement === 'function') {
-                justAchieved = checkStreakAchievement(theme, state.stats.correctCount);
+                justAchieved = checkStreakAchievement(theme, state.currentSubject, state.stats.correctCount);
             }
             if (justAchieved && typeof triggerStreakCelebration === 'function') {
                 triggerStreakCelebration(getGlobalState(theme).streak);

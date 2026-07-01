@@ -28,8 +28,8 @@ function formatTime(totalSeconds) {
 }
 
 function saveStats() {
-    if (!state.currentGrade) return;
-    localStorage.setItem(`toan_stats_grade_${state.currentGrade}`, JSON.stringify({
+    if (!state.currentGrade || !state.currentSubject) return;
+    localStorage.setItem(`toan_stats_grade_${state.currentGrade}_${state.currentSubject}`, JSON.stringify({
         date: getTodayString(),
         stats: {
             startTime: state.stats.startTime,
@@ -43,9 +43,9 @@ function saveStats() {
 }
 
 function loadStats() {
-    if (!state.currentGrade) return null;
+    if (!state.currentGrade || !state.currentSubject) return null;
     try {
-        const raw = localStorage.getItem(`toan_stats_grade_${state.currentGrade}`);
+        const raw = localStorage.getItem(`toan_stats_grade_${state.currentGrade}_${state.currentSubject}`);
         if (raw) {
             const data = JSON.parse(raw);
             if (normDate(data.date) === getTodayString()) return data.stats;
@@ -54,6 +54,17 @@ function loadStats() {
         console.error(e);
     }
     return null;
+}
+
+function getSubjectCorrectToday(grade, subject) {
+    try {
+        const raw = localStorage.getItem(`toan_stats_grade_${grade}_${subject}`);
+        if (raw) {
+            const data = JSON.parse(raw);
+            if (normDate(data.date) === getTodayString()) return data.stats.correctCount || 0;
+        }
+    } catch (e) {}
+    return 0;
 }
 
 function resetStats() {
