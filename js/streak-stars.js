@@ -60,8 +60,12 @@ function addStars(theme, delta) {
     return global.stars;
 }
 
+function getStreakTarget() {
+    return state.currentGrade === 1 ? 25 : 50;
+}
+
 function checkStreakAchievement(theme, correctCount) {
-    if (correctCount < 25) return false;
+    if (correctCount < getStreakTarget()) return false;
     if (state.streakAchievedToday) return false;
     const global = loadGlobal(theme);
     global.streak += 1;
@@ -85,14 +89,17 @@ function renderStreakBar(theme) {
     const streakEl = document.getElementById('streak-count');
     const starsEl = document.getElementById('stars-count');
     const dailyEl = document.getElementById('daily-correct-count');
+    const dailyTargetEl = document.getElementById('daily-correct-target');
     const fill = document.getElementById('streak-progress-fill');
     const redeemStars = document.getElementById('redeem-stars-val');
     const redeemStreak = document.getElementById('redeem-streak-val');
+    const target = getStreakTarget();
 
     if (streakEl) streakEl.textContent = global.streak;
     if (starsEl) starsEl.textContent = global.stars;
     if (dailyEl) dailyEl.textContent = correct;
-    if (fill) fill.style.width = `${Math.min(100, (correct / 25) * 100)}%`;
+    if (dailyTargetEl) dailyTargetEl.textContent = target;
+    if (fill) fill.style.width = `${Math.min(100, (correct / target) * 100)}%`;
     if (redeemStars) redeemStars.textContent = global.stars;
     if (redeemStreak) redeemStreak.textContent = global.streak;
     if (state.streakAchievedToday) {
