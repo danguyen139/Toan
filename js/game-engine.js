@@ -490,7 +490,8 @@ function checkAnswer() {
         const raw = (document.getElementById('input-ans')?.value || '').replace(',', '.');
         isCorrect = (parseFloat(raw).toFixed(1) === prob.answer);
     } else {
-        const v = parseInt(document.getElementById('input-ans')?.value);
+        const raw = (document.getElementById('input-ans')?.value || '').replace(/\./g, '');
+        const v = parseInt(raw, 10);
         isCorrect = (v === prob.answer);
     }
 

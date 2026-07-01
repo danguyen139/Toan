@@ -15,7 +15,9 @@ function loadGlobal(theme) {
 }
 
 function saveGlobal(theme, data) {
-    localStorage.setItem(`toan_global_${theme}`, JSON.stringify(data));
+    try {
+        localStorage.setItem(`toan_global_${theme}`, JSON.stringify(data));
+    } catch (e) {}
 }
 
 function checkDailyLogin(theme) {
@@ -41,8 +43,13 @@ function checkStreakBreak(theme) {
 function compensateStreak(theme) {
     const global = loadGlobal(theme);
     global.streak = (global.streak || 0) + 1;
-    // Set lastStreakDate to yesterday so today's session can extend the streak
-    global.lastStreakDate = getYesterdayString();
+    const yesterday = getYesterdayString();
+    // Only set lastStreakDate to yesterday if it's currently older than yesterday.
+    // If it's already yesterday or today, don't overwrite — prevents compensate
+    // from breaking a valid streak the child already earned today.
+    if (!global.lastStreakDate || normDate(global.lastStreakDate) < yesterday) {
+        global.lastStreakDate = yesterday;
+    }
     saveGlobal(theme, global);
 }
 
