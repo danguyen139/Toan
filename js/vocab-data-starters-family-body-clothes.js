@@ -1,0 +1,58 @@
+// Cambridge Starters: family body clothes
+const VOCAB_STARTERS_FAMILY_BODY_CLOTHES = [
+    // Family
+    { en: 'baby', vi: 'em bé', pos: 'noun', category: 'family' },
+    { en: 'boy', vi: 'con trai', pos: 'noun', category: 'family' },
+    { en: 'brother', vi: 'anh em trai', pos: 'noun', category: 'family' },
+    { en: 'cousin', vi: 'anh em họ', pos: 'noun', category: 'family' },
+    { en: 'dad', vi: 'bố', pos: 'noun', category: 'family' },
+    { en: 'family', vi: 'gia đình', pos: 'noun', category: 'family' },
+    { en: 'father', vi: 'bố', pos: 'noun', category: 'family' },
+    { en: 'friend', vi: 'bạn bè', pos: 'noun', category: 'family' },
+    { en: 'girl', vi: 'con gái', pos: 'noun', category: 'family' },
+    { en: 'grandfather', vi: 'ông', pos: 'noun', category: 'family' },
+    { en: 'grandmother', vi: 'bà', pos: 'noun', category: 'family' },
+    { en: 'man', vi: 'đàn ông (số ít)', pos: 'noun', category: 'family' },
+    { en: 'mother', vi: 'mẹ', pos: 'noun', category: 'family' },
+    { en: 'mum', vi: 'mẹ', pos: 'noun', category: 'family' },
+    { en: 'sister', vi: 'chị em gái', pos: 'noun', category: 'family' },
+    { en: 'woman', vi: 'phụ nữ (số ít)', pos: 'noun', category: 'family' },
+    { en: 'person', vi: 'người', pos: 'noun', category: 'family' },
+    { en: 'people', vi: 'mọi người', pos: 'noun', category: 'family' },
+
+    // Body
+    { en: 'arm', vi: 'cánh tay', pos: 'noun', category: 'body' },
+    { en: 'body', vi: 'cơ thể', pos: 'noun', category: 'body' },
+    { en: 'ear', vi: 'lỗ tai', pos: 'noun', category: 'body' },
+    { en: 'eye', vi: 'con mắt', pos: 'noun', category: 'body' },
+    { en: 'face', vi: 'khuôn mặt', pos: 'noun', category: 'body' },
+    { en: 'foot', vi: 'bàn chân (số ít)', pos: 'noun', category: 'body' },
+    { en: 'feet', vi: 'bàn chân (số nhiều)', pos: 'noun', category: 'body' },
+    { en: 'hair', vi: 'tóc', pos: 'noun', category: 'body' },
+    { en: 'hand', vi: 'bàn tay', pos: 'noun', category: 'body' },
+    { en: 'head', vi: 'cái đầu', pos: 'noun', category: 'body' },
+    { en: 'leg', vi: 'cẳng chân', pos: 'noun', category: 'body' },
+    { en: 'mouth', vi: 'cái miệng', pos: 'noun', category: 'body' },
+    { en: 'nose', vi: 'cái mũi', pos: 'noun', category: 'body' },
+
+    // Clothes
+    { en: 'bag', vi: 'cái túi', pos: 'noun', category: 'clothes' },
+    { en: 'baseball cap', vi: 'nón bóng chày', pos: 'noun', category: 'clothes' },
+    { en: 'boots', vi: 'giày cao', pos: 'noun', category: 'clothes' },
+    { en: 'clothes', vi: 'quần áo', pos: 'noun', category: 'clothes' },
+    { en: 'dress', vi: 'cái đầm', pos: 'noun', category: 'clothes' },
+    { en: 'glasses', vi: 'mắt kính', pos: 'noun', category: 'clothes' },
+    { en: 'hat', vi: 'cái nón', pos: 'noun', category: 'clothes' },
+    { en: 'jacket', vi: 'áo khoác', pos: 'noun', category: 'clothes' },
+    { en: 'jeans', vi: 'quần jean', pos: 'noun', category: 'clothes' },
+    { en: 'shirt', vi: 'áo sơ mi', pos: 'noun', category: 'clothes' },
+    { en: 'shoe', vi: 'đôi giày', pos: 'noun', category: 'clothes' },
+    { en: 'shorts', vi: 'quần đùi', pos: 'noun', category: 'clothes' },
+    { en: 'skirt', vi: 'cái váy', pos: 'noun', category: 'clothes' },
+    { en: 'sock', vi: 'vớ', pos: 'noun', category: 'clothes' },
+    { en: 'trousers', vi: 'quần tây dài', pos: 'noun', category: 'clothes' },
+    { en: 't-shirt', vi: 'áo thun', pos: 'noun', category: 'clothes' },
+    { en: 'watch', vi: 'xem', pos: 'noun', category: 'clothes' },
+    { en: 'wear', vi: 'mặc', pos: 'verb', category: 'clothes' }
+
+];

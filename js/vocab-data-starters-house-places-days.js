@@ -1,0 +1,57 @@
+// Cambridge Starters: house places days
+const VOCAB_STARTERS_HOUSE_PLACES_DAYS = [
+    // House
+    { en: 'armchair', vi: 'ghế có tay', pos: 'noun', category: 'house' },
+    { en: 'bath', vi: 'bồn tắm', pos: 'noun', category: 'house' },
+    { en: 'bathroom', vi: 'nhà vệ sinh, nhà tắm', pos: 'noun', category: 'house' },
+    { en: 'bed', vi: 'cái giường', pos: 'noun', category: 'house' },
+    { en: 'bedroom', vi: 'phòng ngủ', pos: 'noun', category: 'house' },
+    { en: 'bookcase', vi: 'kệ sách', pos: 'noun', category: 'house' },
+    { en: 'box', vi: 'cái hộp', pos: 'noun', category: 'house' },
+    { en: 'camera', vi: 'máy chụp hình', pos: 'noun', category: 'house' },
+    { en: 'chair', vi: 'cái ghế', pos: 'noun', category: 'house' },
+    { en: 'clock', vi: 'đồng hồ', pos: 'noun', category: 'house' },
+    { en: 'computer', vi: 'máy vi tính', pos: 'noun', category: 'house' },
+    { en: 'cupboard', vi: 'cái tủ', pos: 'noun', category: 'house' },
+    { en: 'desk', vi: 'bàn có hộc tủ', pos: 'noun', category: 'house' },
+    { en: 'dining room', vi: 'phòng ăn cơm', pos: 'noun', category: 'house' },
+    { en: 'door', vi: 'cửa ra vào', pos: 'noun', category: 'house' },
+    { en: 'floor', vi: 'tầng, sàn nhà', pos: 'noun', category: 'house' },
+    { en: 'house', vi: 'căn nhà', pos: 'noun', category: 'house' },
+    { en: 'kitchen', vi: 'nhà bếp', pos: 'noun', category: 'house' },
+    { en: 'lamp', vi: 'đèn bàn', pos: 'noun', category: 'house' },
+    { en: 'living room', vi: 'phòng khách', pos: 'noun', category: 'house' },
+    { en: 'mat', vi: 'tấm thảm giậm chân', pos: 'noun', category: 'house' },
+    { en: 'mirror', vi: 'cái gương', pos: 'noun', category: 'house' },
+    { en: 'radio', vi: 'máy nghe đài', pos: 'noun', category: 'house' },
+    { en: 'room', vi: 'cái phòng', pos: 'noun', category: 'house' },
+    { en: 'rug', vi: 'tấm thảm', pos: 'noun', category: 'house' },
+    { en: 'sofa', vi: 'ghế sofa', pos: 'noun', category: 'house' },
+    { en: 'table', vi: 'cái bàn (không có hộc)', pos: 'noun', category: 'house' },
+    { en: 'television', vi: 'ti vi', pos: 'noun', category: 'house' },
+    { en: 'wall', vi: 'cái tường', pos: 'noun', category: 'house' },
+    { en: 'window', vi: 'cửa sổ', pos: 'noun', category: 'house' },
+    { en: 'phone', vi: 'điện thoại', pos: 'noun', category: 'house' },
+    { en: 'photo', vi: 'bức ảnh', pos: 'noun', category: 'house' },
+
+    // Places
+    { en: 'beach', vi: 'bãi biển', pos: 'noun', category: 'places' },
+    { en: 'bookshop', vi: 'tiệm sách', pos: 'noun', category: 'places' },
+    { en: 'sea', vi: 'biển', pos: 'noun', category: 'places' },
+    { en: 'shop', vi: 'cửa hàng', pos: 'noun', category: 'places' },
+    { en: 'street', vi: 'đường, phố', pos: 'noun', category: 'places' },
+    { en: 'park', vi: 'công viên', pos: 'noun', category: 'places' },
+    { en: 'playground', vi: 'sân chơi', pos: 'noun', category: 'places' },
+
+    // Days Weather
+    { en: 'afternoon', vi: 'buổi trưa', pos: 'noun', category: 'days_weather' },
+    { en: 'cool', vi: 'mát, tuyệt vời', pos: 'noun', category: 'days_weather' },
+    { en: 'day', vi: 'ngày', pos: 'noun', category: 'days_weather' },
+    { en: 'evening', vi: 'buổi tối', pos: 'noun', category: 'days_weather' },
+    { en: 'morning', vi: 'buổi sáng', pos: 'noun', category: 'days_weather' },
+    { en: 'night', vi: 'buổi tối', pos: 'noun', category: 'days_weather' },
+    { en: 'sun', vi: 'mặt trời', pos: 'noun', category: 'days_weather' },
+    { en: 'today', vi: 'hôm nay', pos: 'adverb', category: 'days_weather' },
+    { en: 'year', vi: 'năm', pos: 'noun', category: 'days_weather' }
+
+];

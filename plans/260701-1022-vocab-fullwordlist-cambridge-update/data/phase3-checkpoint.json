@@ -1,0 +1,52 @@
+{
+  "completed_files": [
+    [
+      [
+        "daily_routine",
+        "feelings",
+        "health"
+      ],
+      "daily-feelings-health"
+    ],
+    [
+      [
+        "jobs",
+        "shopping",
+        "directions"
+      ],
+      "jobs-shopping-directions"
+    ],
+    [
+      [
+        "food_cooking",
+        "travel",
+        "school"
+      ],
+      "food-travel-school"
+    ],
+    [
+      [
+        "hobbies",
+        "technology",
+        "phrasal_verbs"
+      ],
+      "hobbies-tech-phrasal"
+    ],
+    [
+      [
+        "general"
+      ],
+      "general-a-m"
+    ],
+    [
+      [
+        "general"
+      ],
+      "general-n-z"
+    ]
+  ],
+  "total_words": 1530,
+  "manual_needed": 0,
+  "timestamp": "2026-07-01",
+  "note": "All placeholder [word] entries translated; malformed en fields (POS/region annotations) cleaned; 4 dead-duplicate senses removed (alright, design x1, follow x1, smart x1); general category split into 6 files (a-c,c-g,g-m,n-r,s-t,u-z) to satisfy 200-line cap"
+}

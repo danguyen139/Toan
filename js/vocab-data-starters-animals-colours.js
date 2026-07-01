@@ -1,0 +1,47 @@
+// Cambridge Starters: animals colours
+const VOCAB_STARTERS_ANIMALS_COLOURS = [
+    // Animals
+    { en: 'animal', vi: 'động vật', pos: 'noun', category: 'animals' },
+    { en: 'bear', vi: 'con gấu', pos: 'noun', category: 'animals' },
+    { en: 'bee', vi: 'con ong', pos: 'noun', category: 'animals' },
+    { en: 'bird', vi: 'con chim', pos: 'noun', category: 'animals' },
+    { en: 'cat', vi: 'con mèo', pos: 'noun', category: 'animals' },
+    { en: 'chicken', vi: 'con gà', pos: 'noun', category: 'animals' },
+    { en: 'cow', vi: 'con bò', pos: 'noun', category: 'animals' },
+    { en: 'crocodile', vi: 'cá sấu', pos: 'noun', category: 'animals' },
+    { en: 'dog', vi: 'con chó', pos: 'noun', category: 'animals' },
+    { en: 'donkey', vi: 'con lừa', pos: 'noun', category: 'animals' },
+    { en: 'duck', vi: 'con vịt', pos: 'noun', category: 'animals' },
+    { en: 'elephant', vi: 'con voi', pos: 'noun', category: 'animals' },
+    { en: 'fish', vi: 'con cá', pos: 'noun', category: 'animals' },
+    { en: 'frog', vi: 'con ếch', pos: 'noun', category: 'animals' },
+    { en: 'giraffe', vi: 'hưu cao cổ', pos: 'noun', category: 'animals' },
+    { en: 'goat', vi: 'con dê', pos: 'noun', category: 'animals' },
+    { en: 'hippo', vi: 'hà mã', pos: 'noun', category: 'animals' },
+    { en: 'horse', vi: 'con ngựa', pos: 'noun', category: 'animals' },
+    { en: 'monkey', vi: 'con khỉ', pos: 'noun', category: 'animals' },
+    { en: 'mouse', vi: 'chuột (số ít)', pos: 'noun', category: 'animals' },
+    { en: 'sheep', vi: 'con cừu', pos: 'noun', category: 'animals' },
+    { en: 'snake', vi: 'con rắn', pos: 'noun', category: 'animals' },
+    { en: 'spider', vi: 'con nhện', pos: 'noun', category: 'animals' },
+    { en: 'tail', vi: 'cái đuôi', pos: 'noun', category: 'animals' },
+    { en: 'tiger', vi: 'con hổ', pos: 'noun', category: 'animals' },
+    { en: 'zebra', vi: 'ngựa vằn', pos: 'noun', category: 'animals' },
+    { en: 'zoo', vi: 'sở thú', pos: 'noun', category: 'animals' },
+    { en: 'pet', vi: 'thú cưng', pos: 'noun', category: 'animals' },
+    { en: 'polar bear', vi: 'gấu bắc cực', pos: 'noun', category: 'animals' },
+
+    // Colours
+    { en: 'black', vi: 'màu đen', pos: 'adjective', category: 'colours' },
+    { en: 'blue', vi: 'màu xanh', pos: 'adjective', category: 'colours' },
+    { en: 'brown', vi: 'màu nâu', pos: 'adjective', category: 'colours' },
+    { en: 'colour', vi: 'màu sắc', pos: 'noun', category: 'colours' },
+    { en: 'gray', vi: 'màu xám', pos: 'adjective', category: 'colours' },
+    { en: 'green', vi: 'màu xanh lá', pos: 'adjective', category: 'colours' },
+    { en: 'red', vi: 'màu đỏ', pos: 'adjective', category: 'colours' },
+    { en: 'white', vi: 'màu trắng', pos: 'adjective', category: 'colours' },
+    { en: 'yellow', vi: 'màu vàng', pos: 'adjective', category: 'colours' },
+    { en: 'pink', vi: 'màu hồng', pos: 'adjective', category: 'colours' },
+    { en: 'purple', vi: 'màu tím', pos: 'adjective', category: 'colours' }
+
+];
